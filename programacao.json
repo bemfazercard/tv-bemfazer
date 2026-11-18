@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T13:58:10.947Z",
+ "atualizado": "2026-11-18T13:59:43.343Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -115,7 +115,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135557-whatsapp-image-2026-11-10-at-11.24.05-3-.jpg"
+   "imagem": "midia/20261118135557-whatsapp-image-2026-11-10-at-11.24.05-3-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-jvcy8d",
@@ -132,7 +133,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135609-whatsapp-image-2026-11-10-at-11.24.04-1-.jpg"
+   "imagem": "midia/20261118135609-whatsapp-image-2026-11-10-at-11.24.04-1-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-rkt5rs",
@@ -149,7 +151,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135619-whatsapp-image-2026-11-10-at-11.24.06-1-.jpg"
+   "imagem": "midia/20261118135619-whatsapp-image-2026-11-10-at-11.24.06-1-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-dzurr0",
@@ -166,7 +169,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135630-whatsapp-image-2026-11-10-at-11.24.06.jpg"
+   "imagem": "midia/20261118135630-whatsapp-image-2026-11-10-at-11.24.06.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-lqxqzr",
@@ -183,7 +187,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135645-whatsapp-image-2026-11-10-at-11.24.07-2-.jpg"
+   "imagem": "midia/20261118135645-whatsapp-image-2026-11-10-at-11.24.07-2-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-r7dt4l",
@@ -200,7 +205,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135655-whatsapp-image-2026-11-10-at-11.24.08-1-.jpg"
+   "imagem": "midia/20261118135655-whatsapp-image-2026-11-10-at-11.24.08-1-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-wn9onc",
@@ -217,7 +223,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135705-whatsapp-image-2026-11-10-at-11.24.08-2-.jpg"
+   "imagem": "midia/20261118135705-whatsapp-image-2026-11-10-at-11.24.08-2-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-jmjnzr",
@@ -234,7 +241,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135715-whatsapp-image-2026-11-10-at-11.24.08.jpg"
+   "imagem": "midia/20261118135715-whatsapp-image-2026-11-10-at-11.24.08.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-9comem",
@@ -251,7 +259,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135725-whatsapp-image-2026-11-10-at-11.24.09-1-.jpg"
+   "imagem": "midia/20261118135725-whatsapp-image-2026-11-10-at-11.24.09-1-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-jem0cs",
@@ -268,7 +277,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135736-whatsapp-image-2026-11-10-at-11.24.09-2-.jpg"
+   "imagem": "midia/20261118135736-whatsapp-image-2026-11-10-at-11.24.09-2-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-xlb4z5",
@@ -285,7 +295,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135800-whatsapp-image-2026-11-10-at-11.24.10-1-.jpg"
+   "imagem": "midia/20261118135800-whatsapp-image-2026-11-10-at-11.24.10-1-.jpg",
+   "ajuste": "cover"
   },
   {
    "id": "s-qweoje",
@@ -302,7 +313,8 @@
    "horaIni": "",
    "horaFim": "",
    "repetir": 1,
-   "imagem": "midia/20261118135808-whatsapp-image-2026-11-10-at-11.24.10.jpg"
+   "imagem": "midia/20261118135808-whatsapp-image-2026-11-10-at-11.24.10.jpg",
+   "ajuste": "cover"
   }
  ],
  "noticias": [
