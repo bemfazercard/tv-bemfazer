@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T14:52:54.987Z",
+ "atualizado": "2026-11-18T17:38:07.639Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -27,7 +27,7 @@
    "etiqueta": "Seu benefício começa aqui.",
    "titulo": "Descontos *exclusivos* para *você*",
    "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.",
-   "chamada": "Quero meu cartão",
+   "chamada": "",
    "duracao": 12,
    "repetir": 2,
    "arte": "cartoes"
