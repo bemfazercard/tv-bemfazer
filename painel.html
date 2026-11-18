@@ -135,6 +135,9 @@
         </select>
         <button class="b p" onclick="novoSlide()">+ Novo</button>
       </div>
+      <button class="b pub" style="width:100%;margin-bottom:8px" onclick="$('arqLote').click()">⬆ Enviar várias artes de parceiros de uma vez</button>
+      <input type="file" id="arqLote" accept="image/*" multiple style="display:none" onchange="enviarLote(this)">
+      <div id="loteStatus"></div>
       <button class="b" style="width:100%;margin-bottom:10px" onclick="organizar()">⇅ Organizar: Bem Fazer primeiro, depois parceiros</button>
       <label>Filtrar por canal</label>
       <select id="filtroCanal" onchange="listarSlides()"></select>
@@ -332,6 +335,36 @@ function listarSlides() {
       <button class="b" style="padding:2px 7px" onclick="event.stopPropagation();mover(${i},1)">↓</button>
     </div>`; }).join('') : '<div class="vazio">Nenhum conteúdo.</div>';
 }
+// Envio em lote: uma arte = um parceiro (nome tirado do arquivo)
+async function enviarLote(inp) {
+  const arqs = [...inp.files]; inp.value = '';
+  if (!arqs.length) return;
+  if (!nuvem.cred) return alert('Entre com login para enviar as artes.');
+  const antigos = dados.slides.filter(s => s.tipo === 'imagem');
+  const substituir = antigos.length && confirm(`Você escolheu ${arqs.length} arte(s).\n\nOK = SUBSTITUIR os ${antigos.length} parceiros atuais por estas\nCancelar = só ACRESCENTAR estas aos atuais`);
+  const st = $('loteStatus');
+  const novos = []; let falhas = 0;
+  for (let i = 0; i < arqs.length; i++) {
+    const f = arqs[i];
+    st.innerHTML = `<div class="aviso-box">Enviando ${i + 1} de ${arqs.length}: ${esc(f.name)}…</div>`;
+    const path = await guardarImagem(f, 1600, 0.88);
+    if (!path) { falhas++; continue; }
+    const nome = f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    novos.push({id: uid('s'), tipo: 'imagem', ativo: true, titulo: nome, imagem: path, duracao: 15, canais: [], dias: [], inicio: '', fim: '', horaIni: '', horaFim: '', repetir: 1});
+  }
+  if (substituir) dados.slides = dados.slides.filter(s => s.tipo !== 'imagem');
+  dados.slides.push(...novos);
+  salvar(); listarSlides();
+  st.innerHTML = `<div class="${falhas ? 'erro-box' : 'ok-box'}">✔ ${novos.length} arte(s) enviada(s)${falhas ? ` • ${falhas} falharam` : ''}${substituir ? ` • ${antigos.length} parceiros antigos removidos` : ''}. Confira a lista e clique em <b>Publicar nos totens</b>.</div>`;
+}
+function parceirosInteiros() {
+  const alvo = dados.slides.filter(s => s.tipo === 'imagem' && s.ajuste === 'cover');
+  if (!alvo.length) return alert('Todos os parceiros já estão como "Mostrar inteira".');
+  if (!confirm(`Mudar ${alvo.length} parceiro(s) de "Preencher a tela" para "Mostrar inteira"?\nAssim nada da arte é cortado.`)) return;
+  alvo.forEach(s => s.ajuste = 'contain');
+  salvar(); listarSlides(); if (slideSel) editarSlide(slideSel);
+  alert('Pronto. Agora clique em "Publicar nos totens".');
+}
 // Organiza: telas do Bem Fazer primeiro (relógio/marca à frente), parceiros depois; tira vazios e frases de balcão
 function organizar() {
   const vazios = dados.slides.filter(s => ehParceiro(s) && !(s.imagem || s.video));
@@ -415,10 +448,7 @@ function editarSlide(id) {
       <div class="dica">A imagem é reduzida e enviada para a hospedagem automaticamente (com login). Ou cole um endereço:</div>
       <input type="url" placeholder="https://… ou midia/arquivo.jpg" value="${s.imagem && !s.imagem.startsWith('data:') ? esc(s.imagem) : ''}" oninput="setS('imagem', this.value)">
       ${s.imagem ? `<img class="miniatura" src="${esc(srcPrev(s.imagem))}"><button class="b x" style="margin-top:6px" onclick="setS('imagem','');editarSlide('${id}')">Remover imagem</button>` : ''}`;
-    if (t === 'imagem') h += `<label>Ajuste</label><select onchange="setS('ajuste', this.value)">
-      <option value="contain" ${s.ajuste !== 'cover' ? 'selected' : ''}>Mostrar inteira — recomendado (não corta nada)</option>
-      <option value="cover" ${s.ajuste === 'cover' ? 'selected' : ''}>Preencher a tela (corta as bordas da arte)</option></select>
-      <div class="dica">Para a arte ocupar a tela toda sem cortar, faça no tamanho <b>1080 × 1800</b> (totem em pé, descontando a faixa do topo).</div>`;
+    if (t === 'imagem') h += `<div class="ok-box">A arte aparece sempre <b>inteira</b>, na proporção original, sem cortar nada. Formato ideal: <b>2:3</b> (ex.: 1024 × 1536), igual aos folhetos atuais.</div>`;
   }
   if (t === 'video') {
     h += `<label>Enviar vídeo (MP4)</label><input type="file" accept="video/mp4,video/*" onchange="carregarVideo(this)">`;

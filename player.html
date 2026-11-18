@@ -481,7 +481,8 @@ function render(s) {
   const el = document.createElement('div');
   el.className = 'slide m-' + (s.tipo || 'aviso');
   if (s.cor) el.style.setProperty('--slidecor', s.cor);
-  if (s.ajuste) el.style.setProperty('--ajuste', s.ajuste);
+  // arte de parceiro (tipo imagem) aparece SEMPRE inteira, na proporção original — nunca corta
+  if (s.ajuste && s.tipo !== 'imagem') el.style.setProperty('--ajuste', s.ajuste);
   const etiqueta = s.etiqueta ? `<div class="etiqueta">${esc(s.etiqueta)}</div>` : '';
   const chamada = s.chamada ? `<div class="chamada"><span>${esc(s.chamada)}</span><i>→</i></div>` : '';
   // arte decorativa (tema Bem Fazer): cartões flutuando ou coração
