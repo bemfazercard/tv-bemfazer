@@ -1,0 +1,13 @@
+{
+ "versao": 1,
+ "dono": "bemfazercard",
+ "repo": "tv-bemfazer",
+ "usuarios": [
+  {
+   "usuario": "admbemfazercard",
+   "salt": "B8H/EWpE8y+ndc7G+aYrDQ==",
+   "iv": "F4T8iSejPtxFZGNX",
+   "dado": "86Gfoh1veuDeqqAgR//lk0Scjrzk/13gr16f4ROM6y4FB43F6qqrjN4eG4i4SHx/zCgfu4hCBEg7mEcfeXx25rJbkFhubgR1KaM8xSoPme1n0NcT3Bd+ZRahZwAgm4o6OFpi5k5Qt16ce5+XAg=="
+  }
+ ]
+}
