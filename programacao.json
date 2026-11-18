@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T13:09:30.441Z",
+ "atualizado": "2026-11-18T13:55:24.300Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -99,6 +99,23 @@
    "canais": [],
    "titulo": "**bemfazercard.com.br**",
    "duracao": 8
+  },
+  {
+   "id": "s-l11pu3",
+   "tipo": "imagem",
+   "ativo": true,
+   "titulo": "",
+   "texto": "",
+   "etiqueta": "",
+   "duracao": 10,
+   "canais": [],
+   "dias": [],
+   "inicio": "",
+   "fim": "",
+   "horaIni": "",
+   "horaFim": "",
+   "repetir": 1,
+   "imagem": "midia/20261118135520-whatsapp-image-2026-11-10-at-11.24.04-1-.jpg"
   }
  ],
  "noticias": [
