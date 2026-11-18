@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T13:56:00.138Z",
+ "atualizado": "2026-11-18T13:56:11.975Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -116,6 +116,23 @@
    "horaFim": "",
    "repetir": 1,
    "imagem": "midia/20261118135557-whatsapp-image-2026-11-10-at-11.24.05-3-.jpg"
+  },
+  {
+   "id": "s-jvcy8d",
+   "tipo": "imagem",
+   "ativo": true,
+   "titulo": "",
+   "texto": "",
+   "etiqueta": "",
+   "duracao": 10,
+   "canais": [],
+   "dias": [],
+   "inicio": "",
+   "fim": "",
+   "horaIni": "",
+   "horaFim": "",
+   "repetir": 1,
+   "imagem": "midia/20261118135609-whatsapp-image-2026-11-10-at-11.24.04-1-.jpg"
   }
  ],
  "noticias": [
