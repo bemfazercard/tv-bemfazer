@@ -135,6 +135,7 @@
         </select>
         <button class="b p" onclick="novoSlide()">+ Novo</button>
       </div>
+      <button class="b" style="width:100%;margin-bottom:10px" onclick="organizar()">⇅ Organizar: Bem Fazer primeiro, depois parceiros</button>
       <label>Filtrar por canal</label>
       <select id="filtroCanal" onchange="listarSlides()"></select>
       <div class="lista" id="listaSlides" style="margin-top:10px"></div>
@@ -226,7 +227,7 @@
 
 <script>
 const CHAVE = 'tvcorp_painel_v1';
-const AMOSTRA = {"versao": 1, "atualizado": "2026-11-18T12:00:00.000Z", "canais": [{"id": "bemfazer-loja", "nome": "Bem Fazer Card", "orientacao": "auto", "cor": "#2a1450", "fundo": "#130a24", "destaque": "#e8217f", "duracaoPadrao": 10, "rodape": false, "logoNoM": true, "clima": true, "cidade": "Altamira", "transicao": "aleatoria", "tema": "bemfazer"}], "slides": [{"id": "bf-economia", "tipo": "campanha", "ativo": true, "canais": [], "etiqueta": "Seu benefício começa aqui.", "titulo": "Descontos *exclusivos* para *você*", "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.", "chamada": "Quero meu cartão", "duracao": 12, "repetir": 2, "arte": "cartoes"}, {"id": "bf-planos", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Planos", "titulo": "Tudo a partir de *R$ 29,90* por mês", "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.", "duracao": 12, "chamada": "Fale com a gente no balcão"}, {"id": "bf-clima", "tipo": "clima", "ativo": true, "canais": [], "titulo": "Previsão do tempo", "duracao": 10}, {"id": "bf-rede", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Rede parceira", "titulo": "Use em *vários* lugares", "texto": "Saúde • Mercados • Beleza\nMateriais elétricos • Celular\nAuto center • Educação", "duracao": 12}, {"id": "bf-brinde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Cliente em dia", "titulo": "Tem *brinde* para você!", "texto": "Clientes com a mensalidade em dia ganham brinde. Passe aqui na loja.", "chamada": "Box 05 • Camelódromo", "duracao": 10}, {"id": "bf-manchetes", "tipo": "manchetes", "ativo": true, "canais": [], "titulo": "Últimas notícias", "etiqueta": "Últimas notícias", "duracao": 15}, {"id": "bf-onde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Onde estamos", "titulo": "Box 05 – *Camelódromo* José Goes", "texto": "Shopping de Variedades • Altamira\n**bemfazercard.com.br**", "duracao": 10, "arte": "nenhuma"}, {"id": "bf-relogio", "tipo": "relogio", "ativo": true, "canais": [], "titulo": "**bemfazercard.com.br**", "duracao": 8}], "noticias": []};
+const AMOSTRA = {"versao": 1, "atualizado": "2026-11-18T12:00:00.000Z", "canais": [{"id": "bemfazer-loja", "nome": "Bem Fazer Card", "orientacao": "auto", "cor": "#2a1450", "fundo": "#130a24", "destaque": "#e8217f", "duracaoPadrao": 10, "rodape": false, "logoNoM": true, "clima": true, "cidade": "Altamira", "transicao": "aleatoria", "tema": "bemfazer"}], "slides": [{"id": "bf-relogio", "tipo": "relogio", "ativo": true, "canais": [], "titulo": "**bemfazercard.com.br**", "duracao": 8}, {"id": "bf-economia", "tipo": "campanha", "ativo": true, "canais": [], "etiqueta": "Seu benefício começa aqui.", "titulo": "Descontos *exclusivos* para *você*", "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.", "chamada": "Quero meu cartão", "duracao": 12, "repetir": 2, "arte": "cartoes"}, {"id": "bf-planos", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Planos", "titulo": "Tudo a partir de *R$ 29,90* por mês", "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.", "duracao": 12, "chamada": ""}, {"id": "bf-clima", "tipo": "clima", "ativo": true, "canais": [], "titulo": "Previsão do tempo", "duracao": 10}, {"id": "bf-rede", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Rede parceira", "titulo": "Use em *vários* lugares", "texto": "Saúde • Mercados • Beleza\nMateriais elétricos • Celular\nAuto center • Educação", "duracao": 12}, {"id": "bf-brinde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Cliente em dia", "titulo": "Tem *brinde* para você!", "texto": "Clientes com a mensalidade em dia ganham brinde. Passe aqui na loja.", "chamada": "Box 05 • Camelódromo", "duracao": 10}, {"id": "bf-manchetes", "tipo": "manchetes", "ativo": true, "canais": [], "titulo": "Últimas notícias", "etiqueta": "Últimas notícias", "duracao": 15}, {"id": "bf-onde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Onde estamos", "titulo": "Box 05 – *Camelódromo* José Goes", "texto": "Shopping de Variedades • Altamira\n**bemfazercard.com.br**", "duracao": 10, "arte": "nenhuma"}], "noticias": []};
 const DIAS = [['seg','Seg'],['ter','Ter'],['qua','Qua'],['qui','Qui'],['sex','Sex'],['sab','Sáb'],['dom','Dom']];
 const NOMES_TIPO = {aviso:'Aviso', campanha:'Campanha', noticia:'Notícia', indicador:'Indicador', imagem:'Imagem', video:'Vídeo', relogio:'Relógio', clima:'Clima', manchetes:'Manchetes'};
 let dados = null, slideSel = null, canalSel = null;
@@ -306,17 +307,52 @@ function preencherSelectsCanal() {
 }
 
 /* ---------- CONTEÚDOS ---------- */
+const ehParceiro = s => s.tipo === 'imagem' || s.tipo === 'video';
+function nomeArquivo(u) { if (!u) return ''; if (String(u).startsWith('data:')) return 'imagem'; return decodeURIComponent(String(u).split('/').pop()).replace(/^\d{14}-/, '').replace(/\.[a-z0-9]+$/i, ''); }
+function nomeSlide(s) {
+  if (ehParceiro(s)) return s.titulo || nomeArquivo(s.imagem || s.video) || '(vazio — sem arquivo)';
+  return s.titulo || s.etiqueta || '(sem título)';
+}
 function listarSlides() {
   const f = $('filtroCanal').value;
   const itens = dados.slides.map((s, i) => ({s, i})).filter(({s}) => !f || !s.canais || !s.canais.length || s.canais.includes(f));
-  $('listaSlides').innerHTML = itens.length ? itens.map(({s, i}) => `
-    <div class="item ${s.id === slideSel ? 'sel' : ''} ${s.ativo === false ? 'off' : ''}" onclick="editarSlide('${s.id}')">
+  let jaParceiro = false;
+  $('listaSlides').innerHTML = itens.length ? itens.map(({s, i}) => {
+    let cab = '';
+    if (ehParceiro(s) && !jaParceiro) { jaParceiro = true; cab = '<div class="dica" style="margin:8px 2px 0;font-weight:700;color:#e8217f">PARCEIROS</div>'; }
+    if (i === 0 && !ehParceiro(s)) cab = '<div class="dica" style="margin:0 2px;font-weight:700;color:#123d7a">BEM FAZER CARD</div>';
+    const mini = ehParceiro(s) ? (s.tipo === 'imagem' && s.imagem ? `<img src="${esc(srcPrev(s.imagem))}" style="width:28px;height:40px;object-fit:cover;border-radius:4px;flex:0 0 auto">` : `<span style="width:28px;text-align:center">${s.tipo === 'video' ? '🎬' : '⚠️'}</span>`) : '';
+    const vazio = ehParceiro(s) && !(s.imagem || s.video);
+    return cab + `
+    <div class="item ${s.id === slideSel ? 'sel' : ''} ${s.ativo === false ? 'off' : ''}" onclick="editarSlide('${s.id}')" ${vazio ? 'style="border-color:#e53935"' : ''}>
       <span class="st ${noAr(s, f || null) ? 'ar' : 'fora'}" title="${noAr(s, f || null) ? 'no ar agora' : 'fora do ar agora'}"></span>
-      <span class="tipo">${NOMES_TIPO[s.tipo] || s.tipo}</span>
-      <span class="nome">${esc(s.titulo || s.etiqueta || '(sem título)')}</span>
+      ${mini}<span class="tipo">${ehParceiro(s) ? 'Parceiro' : (NOMES_TIPO[s.tipo] || s.tipo)}</span>
+      <span class="nome" ${vazio ? 'style="color:#e53935"' : ''}>${esc(nomeSlide(s))}</span>
       <button class="b" style="padding:2px 7px" onclick="event.stopPropagation();mover(${i},-1)">↑</button>
       <button class="b" style="padding:2px 7px" onclick="event.stopPropagation();mover(${i},1)">↓</button>
-    </div>`).join('') : '<div class="vazio">Nenhum conteúdo.</div>';
+    </div>`; }).join('') : '<div class="vazio">Nenhum conteúdo.</div>';
+}
+// Organiza: telas do Bem Fazer primeiro (relógio/marca à frente), parceiros depois; tira vazios e frases de balcão
+function organizar() {
+  const vazios = dados.slides.filter(s => ehParceiro(s) && !(s.imagem || s.video));
+  const balcao = dados.slides.filter(s => !ehParceiro(s) && (/balc[aã]o/i.test(s.chamada || '') || /balc[aã]o/i.test(s.texto || '')));
+  const msg = ['Organizar a programação assim?', '',
+    '1. Telas do Bem Fazer primeiro (começando pela marca com o horário)',
+    '2. Depois todos os parceiros, na ordem atual'];
+  if (vazios.length) msg.push(`3. Apagar ${vazios.length} parceiro(s) vazio(s), sem arquivo`);
+  if (balcao.length) msg.push(`${vazios.length ? 4 : 3}. Tirar as frases de "balcão" de ${balcao.length} tela(s)`);
+  if (!confirm(msg.join('\n'))) return;
+  dados.slides = dados.slides.filter(s => !vazios.includes(s));
+  balcao.forEach(s => {
+    if (/balc[aã]o/i.test(s.chamada || '')) s.chamada = '';
+    if (/balc[aã]o/i.test(s.texto || '')) s.texto = s.texto.split('\n').filter(l => !/balc[aã]o/i.test(l)).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  });
+  const rel = dados.slides.filter(s => s.tipo === 'relogio');
+  const bf = dados.slides.filter(s => !ehParceiro(s) && s.tipo !== 'relogio');
+  const parc = dados.slides.filter(ehParceiro);
+  dados.slides = [...rel, ...bf, ...parc];
+  slideSel = null; salvar(); listarSlides();
+  $('editorSlide').innerHTML = '<div class="vazio">Organizado. Confira a lista e clique em <b>Publicar nos totens</b>.</div>';
 }
 function mover(i, d) { const j = i + d; if (j < 0 || j >= dados.slides.length) return; [dados.slides[i], dados.slides[j]] = [dados.slides[j], dados.slides[i]]; salvar(); listarSlides(); }
 
@@ -372,6 +408,7 @@ function editarSlide(id) {
   if (t === 'manchetes') h += `<div class="aviso-box">Mostra as manchetes mais recentes (título, fonte e horário) buscadas pelo robô de notícias (veja o LEIA-ME).
     A cada exibição mostra manchetes diferentes. <b>Só aparece quando a TV tem internet.</b></div>`
     + campo('Etiqueta', 'etiqueta', s) + campo('Quantas manchetes por tela (1 a 6, vazio = automático)', 'quantidade', s, 'number', 'min="1" max="6"');
+  if (t === 'imagem' || t === 'video') h += campo('Nome do parceiro (só para você achar na lista)', 'titulo', s, 'text', 'placeholder="ex.: Farmácia Confiança"');
   if (['campanha','noticia','imagem'].includes(t)) {
     h += `<label>Imagem</label>
       <input type="file" accept="image/*" onchange="carregarImagem(this)">
