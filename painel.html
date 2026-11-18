@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel – TV Bem Fazer Card</title>
+<style>
+  :root { --pri: #123d7a; --pri2: #0a2140; --borda: #d9e0e6; --fundo: #f4f6f8; --txt: #1d2a35; --sub: #5c6b78; --ok: #2e7d32; --erro: #c62828; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: var(--fundo); color: var(--txt); font-size: 14px; }
+  header { background: var(--pri); color: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; font-weight: 700; }
+  header .salvo { margin-left: auto; font-size: 12px; opacity: .85; }
+  nav { display: flex; gap: 4px; background: #fff; border-bottom: 1px solid var(--borda); padding: 0 16px; overflow-x: auto; }
+  nav button { border: 0; background: none; padding: 12px 16px; font-size: 14px; cursor: pointer; color: var(--sub); border-bottom: 3px solid transparent; white-space: nowrap; }
+  nav button.on { color: var(--pri); border-color: var(--pri); font-weight: 600; }
+  main { padding: 20px; max-width: 1280px; margin: 0 auto; }
+  .aba { display: none; } .aba.on { display: block; }
+  .grade { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .grade { grid-template-columns: 1fr; } }
+  .card { background: #fff; border: 1px solid var(--borda); border-radius: 10px; padding: 16px; }
+  .card h2 { font-size: 15px; margin: 0 0 12px; }
+  .lista { display: flex; flex-direction: column; gap: 6px; max-height: 70vh; overflow-y: auto; }
+  .item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; background: #fff; }
+  .item:hover { border-color: var(--pri); }
+  .item.sel { border-color: var(--pri); background: #e8f5f6; }
+  .item .tipo { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: #eef1f4; color: var(--sub); white-space: nowrap; }
+  .item .nome { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item.off .nome { opacity: .45; text-decoration: line-through; }
+  .item .st { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+  .st.ar { background: var(--ok); } .st.fora { background: #bbb; }
+  .barra { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  button.b { border: 1px solid var(--borda); background: #fff; padding: 8px 14px; border-radius: 7px; cursor: pointer; font-size: 13px; color: var(--txt); }
+  button.b:hover { border-color: var(--pri); }
+  button.p { background: var(--pri); color: #fff; border-color: var(--pri); }
+  button.p:hover { background: var(--pri2); }
+  button.x { color: var(--erro); }
+  label { display: block; font-size: 12px; color: var(--sub); margin: 10px 0 4px; font-weight: 600; }
+  input[type=text], input[type=number], input[type=date], input[type=time], input[type=url], input[type=password], select, textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--borda); border-radius: 7px; font: inherit; background: #fff; }
+  textarea { min-height: 80px; resize: vertical; }
+  input[type=color] { width: 48px; height: 34px; border: 1px solid var(--borda); border-radius: 7px; padding: 2px; background: #fff; }
+  .linha { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chips label { display: inline-flex; align-items: center; gap: 5px; margin: 0; padding: 5px 10px; border: 1px solid var(--borda); border-radius: 16px; font-weight: 500; color: var(--txt); cursor: pointer; }
+  .dica { font-size: 12px; color: var(--sub); margin-top: 4px; }
+  .vazio { color: var(--sub); text-align: center; padding: 40px 10px; }
+  .miniatura { margin-top: 8px; max-width: 220px; max-height: 140px; border-radius: 6px; border: 1px solid var(--borda); display: block; }
+  .previa { background: #111; border-radius: 10px; overflow: hidden; display: flex; justify-content: center; padding: 10px; }
+  .previa iframe { border: 0; background: #000; }
+  .aviso-box { background: #fff8e1; border: 1px solid #ffe08a; border-radius: 8px; padding: 10px 12px; font-size: 13px; margin: 10px 0; }
+  .ok-box { background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 8px; padding: 10px 12px; font-size: 13px; margin: 10px 0; }
+  .erro-box { background: #ffebee; border: 1px solid #ef9a9a; border-radius: 8px; padding: 10px 12px; font-size: 13px; margin: 10px 0; }
+  code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; font-size: 12px; word-break: break-all; }
+  .campo-tipo { display: none; } .campo-tipo.on { display: block; }
+  table { width: 100%; border-collapse: collapse; } td, th { text-align: left; padding: 8px; border-bottom: 1px solid var(--borda); font-size: 13px; }
+  #login { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: radial-gradient(60vmax 50vmax at 85% 15%, rgba(118,40,205,.45), transparent 62%), linear-gradient(180deg, #160c2b, #120a22); }
+  #login .cx { background: #fff; border-radius: 14px; padding: 28px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+  #login h2 { margin: 0 0 4px; font-size: 20px; } #login .sub { color: var(--sub); font-size: 13px; margin-bottom: 14px; }
+  #login .b { width: 100%; margin-top: 14px; padding: 11px; font-size: 15px; }
+  .marca-bf { font: 600 26px Poppins, "Segoe UI", sans-serif; color: #1d1236; margin-bottom: 14px; letter-spacing: -.5px; }
+  .marca-bf span { color: #e8217f; }
+  header .acoes { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  header .acoes .b { padding: 6px 12px; }
+  #pendente { font-size: 12px; background: #ffc83d; color: #222; padding: 3px 9px; border-radius: 10px; display: none; }
+  #usuarioTopo { font-size: 13px; opacity: .9; }
+  button.pub { background: linear-gradient(90deg, #e8217f, #b22bd9); color: #fff; border: 0; font-weight: 700; }
+</style>
+</head>
+<body>
+<!-- ============ LOGIN ============ -->
+<div id="login">
+  <div class="cx">
+    <div class="marca-bf">be<span>♥</span>fazer <small style="font-size:13px">card</small></div>
+    <div id="loginEntrar">
+      <h2>Entrar no painel da TV</h2>
+      <div class="sub">Use seu usuário e senha. As mudanças publicadas aparecem nos totens.</div>
+      <label>Usuário</label><input type="text" id="lgUsuario" autocomplete="username">
+      <label>Senha</label><input type="password" id="lgSenha" autocomplete="current-password" onkeydown="if(event.key==='Enter')entrar()">
+      <label class="chips" style="margin-top:10px"><label><input type="checkbox" id="lgLembrar"> Manter conectado neste computador</label></label>
+      <button class="b p" onclick="entrar()">Entrar</button>
+      <div id="lgMsg"></div>
+    </div>
+    <div id="loginCriar" style="display:none">
+      <h2>Primeira configuração</h2>
+      <div class="sub">Crie o usuário administrador. Isso é feito uma vez só; depois é só entrar com usuário e senha em qualquer computador.</div>
+      <div id="crRepoBox"><label>Usuário do GitHub</label><input type="text" id="crDono">
+        <label>Repositório</label><input type="text" id="crRepo" placeholder="tv-bemfazer"></div>
+      <label>Token do GitHub (veja o LEIA-ME)</label><input type="password" id="crToken" placeholder="github_pat_...">
+      <label>Seu usuário no painel</label><input type="text" id="crUsuario" placeholder="ex.: daniel">
+      <label>Senha (mínimo 10 caracteres)</label><input type="password" id="crSenha" autocomplete="new-password">
+      <label>Repita a senha</label><input type="password" id="crSenha2" autocomplete="new-password">
+      <button class="b p" onclick="criarAcesso()">Criar acesso</button>
+      <div id="crMsg"></div>
+    </div>
+    <div style="margin-top:16px;text-align:center"><a href="#" style="font-size:12px;color:var(--sub)" onclick="usarLocal();return false">Usar sem login, só neste computador</a></div>
+  </div>
+</div>
+
+<header>
+  <h1>📺 TV Bem Fazer Card – Painel</h1>
+  <span class="salvo" id="salvo">Salvo neste computador</span>
+  <div class="acoes">
+    <span id="pendente">● alterações não publicadas</span>
+    <button class="b pub" id="btnPublicarTopo" onclick="publicar()" style="display:none">⬆ Publicar nos totens</button>
+    <span id="usuarioTopo"></span>
+    <button class="b" id="btnSair" onclick="sair()" style="display:none">Sair</button>
+  </div>
+</header>
+<nav>
+  <button data-aba="slides" class="on">Conteúdos</button>
+  <button data-aba="noticias">Rodapé de notícias</button>
+  <button data-aba="canais">Canais (telas)</button>
+  <button data-aba="previa">Pré-visualizar</button>
+  <button data-aba="publicar">Publicar</button>
+</nav>
+<main>
+
+<!-- ============ CONTEÚDOS ============ -->
+<section class="aba on" id="aba-slides">
+  <div class="grade">
+    <div class="card">
+      <div class="barra">
+        <select id="novoTipo" style="width:auto">
+          <option value="aviso">Aviso / comunicado</option>
+          <option value="campanha">Campanha (imagem + texto)</option>
+          <option value="noticia">Notícia</option>
+          <option value="indicador">Indicador (número grande)</option>
+          <option value="imagem">Imagem / arte pronta</option>
+          <option value="video">Vídeo</option>
+          <option value="relogio">Relógio</option>
+          <option value="clima">Clima / previsão (precisa de internet)</option>
+          <option value="manchetes">Manchetes de notícias (precisa de internet)</option>
+        </select>
+        <button class="b p" onclick="novoSlide()">+ Novo</button>
+      </div>
+      <label>Filtrar por canal</label>
+      <select id="filtroCanal" onchange="listarSlides()"></select>
+      <div class="lista" id="listaSlides" style="margin-top:10px"></div>
+      <div class="dica">● verde = no ar agora • use ↑ ↓ para mudar a ordem de exibição</div>
+    </div>
+    <div class="card" id="editorSlide"><div class="vazio">Selecione um conteúdo ou crie um novo.</div></div>
+  </div>
+</section>
+
+<!-- ============ NOTÍCIAS ============ -->
+<section class="aba" id="aba-noticias">
+  <div class="card">
+    <h2>Rodapé de notícias (texto rolando na parte de baixo da tela)</h2>
+    <div class="barra"><button class="b p" onclick="novaNoticia()">+ Nova notícia</button></div>
+    <table><thead><tr><th>Texto</th><th style="width:200px">Canais</th><th style="width:130px">Até</th><th style="width:60px">Ativa</th><th style="width:40px"></th></tr></thead>
+    <tbody id="tabNoticias"></tbody></table>
+    <div class="dica">Deixe os canais em branco para mostrar em todas as telas.</div>
+  </div>
+</section>
+
+<!-- ============ CANAIS ============ -->
+<section class="aba" id="aba-canais">
+  <div class="grade">
+    <div class="card">
+      <div class="barra"><button class="b p" onclick="novoCanal()">+ Novo canal</button></div>
+      <div class="lista" id="listaCanais"></div>
+      <div class="dica">Cada canal é uma programação. Várias TVs podem usar o mesmo canal.</div>
+    </div>
+    <div class="card" id="editorCanal"><div class="vazio">Selecione um canal.</div></div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <h2>Fotos de fundo do clima (valem para todas as telas)</h2>
+    <div class="dica">A TV escolhe a foto sozinha conforme o tempo de agora, e os quadrinhos de cada dia usam a foto da previsão daquele dia.
+      Use fotos reais em boa resolução (mínimo 1080×1920 para tela em pé). Sem foto escolhida, usa a foto padrão.</div>
+    <div id="fundosClima" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- ============ PRÉVIA ============ -->
+<section class="aba" id="aba-previa">
+  <div class="card">
+    <div class="barra" style="align-items:center">
+      <label style="margin:0">Canal:</label>
+      <select id="previaCanal" style="width:auto"></select>
+      <select id="previaForma" style="width:auto" title="usado quando o canal está em orientação automática"><option value="vertical">Tela em pé</option><option value="horizontal">Tela deitada</option></select>
+      <button class="b p" onclick="abrirPrevia()">▶ Reproduzir</button>
+      <span class="dica">A prévia usa exatamente o mesmo player das TVs, com os dados atuais do painel (mesmo os não publicados).</span>
+    </div>
+    <div class="previa" id="previaBox"><div class="vazio" style="color:#aaa">Clique em Reproduzir.</div></div>
+  </div>
+</section>
+
+<!-- ============ PUBLICAR ============ -->
+<section class="aba" id="aba-publicar">
+  <div class="grade">
+    <div class="card">
+      <h2>Publicação nos totens</h2>
+      <div id="infoNuvem" class="dica"></div>
+      <div class="barra" style="margin-top:12px">
+        <button class="b pub" onclick="publicar()">⬆ Publicar agora</button>
+        <button class="b" onclick="carregarDaNuvem(true)">⟳ Recarregar o que está no ar</button>
+      </div>
+      <div id="pubStatus"></div>
+      <h2 style="margin-top:22px">Usuários do painel</h2>
+      <div id="listaUsuarios" class="dica">Entre com login para gerenciar usuários.</div>
+      <div class="linha" style="margin-top:8px">
+        <div><label>Novo usuário</label><input type="text" id="nuUsuario"></div>
+        <div><label>Senha (mín. 10)</label><input type="password" id="nuSenha" autocomplete="new-password"></div></div>
+      <div class="barra" style="margin-top:10px"><button class="b" onclick="adicionarUsuario()">+ Adicionar / trocar senha</button></div>
+      <div class="dica">Para trocar a sua senha, digite o seu próprio usuário com a senha nova.</div>
+      <div id="usrMsg"></div>
+    </div>
+    <div class="card">
+      <h2>Cópia de segurança</h2>
+      <div class="dica">Baixe a programação para guardar uma cópia, ou importe uma cópia salva.</div>
+      <div class="barra" style="margin-top:12px">
+        <button class="b p" onclick="baixarJSON()">⬇ Baixar programacao.json</button>
+        <button class="b" onclick="document.getElementById('arqImport').click()">⤒ Importar arquivo</button>
+        <input type="file" id="arqImport" accept=".json" style="display:none" onchange="importarJSON(this)">
+      </div>
+      <h2 style="margin-top:20px">Endereços para as TVs</h2>
+      <div class="dica">Use no instalador do computador do totem (ou no Fully Kiosk, se for TV box):</div>
+      <div id="urlsTV"></div>
+      <div id="tamanho" class="dica" style="margin-top:12px"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+const CHAVE = 'tvcorp_painel_v1';
+const AMOSTRA = {"versao": 1, "atualizado": "2026-11-18T12:00:00.000Z", "canais": [{"id": "bemfazer-loja", "nome": "Bem Fazer Card", "orientacao": "auto", "cor": "#2a1450", "fundo": "#130a24", "destaque": "#e8217f", "duracaoPadrao": 10, "rodape": false, "logoNoM": true, "clima": true, "cidade": "Altamira", "transicao": "aleatoria", "tema": "bemfazer"}], "slides": [{"id": "bf-economia", "tipo": "campanha", "ativo": true, "canais": [], "etiqueta": "Seu benefício começa aqui.", "titulo": "Descontos *exclusivos* para *você*", "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.", "chamada": "Quero meu cartão", "duracao": 12, "repetir": 2, "arte": "cartoes"}, {"id": "bf-planos", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Planos", "titulo": "Tudo a partir de *R$ 29,90* por mês", "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.", "duracao": 12, "chamada": "Fale com a gente no balcão"}, {"id": "bf-clima", "tipo": "clima", "ativo": true, "canais": [], "titulo": "Previsão do tempo", "duracao": 10}, {"id": "bf-rede", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Rede parceira", "titulo": "Use em *vários* lugares", "texto": "Saúde • Mercados • Beleza\nMateriais elétricos • Celular\nAuto center • Educação", "duracao": 12}, {"id": "bf-brinde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Cliente em dia", "titulo": "Tem *brinde* para você!", "texto": "Clientes com a mensalidade em dia ganham brinde. Passe aqui na loja.", "chamada": "Box 05 • Camelódromo", "duracao": 10}, {"id": "bf-manchetes", "tipo": "manchetes", "ativo": true, "canais": [], "titulo": "Últimas notícias", "etiqueta": "Últimas notícias", "duracao": 15}, {"id": "bf-onde", "tipo": "aviso", "ativo": true, "canais": [], "etiqueta": "Onde estamos", "titulo": "Box 05 – *Camelódromo* José Goes", "texto": "Shopping de Variedades • Altamira\n**bemfazercard.com.br**", "duracao": 10, "arte": "nenhuma"}, {"id": "bf-relogio", "tipo": "relogio", "ativo": true, "canais": [], "titulo": "**bemfazercard.com.br**", "duracao": 8}], "noticias": []};
+const DIAS = [['seg','Seg'],['ter','Ter'],['qua','Qua'],['qui','Qui'],['sex','Sex'],['sab','Sáb'],['dom','Dom']];
+const NOMES_TIPO = {aviso:'Aviso', campanha:'Campanha', noticia:'Notícia', indicador:'Indicador', imagem:'Imagem', video:'Vídeo', relogio:'Relógio', clima:'Clima', manchetes:'Manchetes'};
+let dados = null, slideSel = null, canalSel = null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = p => p + '-' + Math.random().toString(36).slice(2, 8);
+
+/* ---------- Persistência ---------- */
+function salvar() {
+  dados.atualizado = new Date().toISOString();
+  if (nuvem.cred) { nuvem.pendente = true; try { localStorage.setItem('tvcorp_pendente', '1'); } catch (_) {} mostrarEstado(); }
+  try { localStorage.setItem(CHAVE, JSON.stringify(dados)); $('salvo').textContent = 'Salvo neste computador ' + new Date().toLocaleTimeString('pt-BR'); }
+  catch (e) { $('salvo').textContent = '⚠ Não foi possível salvar (imagens grandes demais?)'; }
+  atualizarTamanho();
+}
+async function iniciar() {
+  let salvo = null;
+  try { salvo = localStorage.getItem(CHAVE); } catch (_) {}
+  if (salvo) dados = JSON.parse(salvo);
+  else {
+    try { const r = await fetch('programacao.json?t=' + Date.now()); if (r.ok) dados = await r.json(); } catch (_) {}
+    if (!dados) dados = JSON.parse(JSON.stringify(AMOSTRA)); // exemplo inicial (Bem Fazer Card)
+    salvar();
+  }
+  dados.noticias = dados.noticias || []; dados.slides = dados.slides || []; dados.canais = dados.canais || [];
+  tudo();
+  await iniciarLogin();
+}
+const TIPOS_CEU = [['limpo','Ensolarado / poucas nuvens'],['nublado','Nublado'],['chuva','Chuva'],['tempestade','Tempestade / chuva forte'],['neblina','Neblina'],['noite','Noite']];
+function listarFundos() {
+  const f = dados.fundosClima || {};
+  $('fundosClima').innerHTML = TIPOS_CEU.map(([k, n]) => `<div>
+    <div style="height:200px;border-radius:8px;border:1px solid var(--borda);background:#ccd center/cover no-repeat url('${esc(srcPrev(f[k] || 'clima-' + k + '.jpg'))}')"></div>
+    <b style="display:block;margin:6px 0 4px;font-size:13px">${n}</b>
+    <input type="file" accept="image/*" style="font-size:11px;width:100%" onchange="trocarFundo('${k}', this)">
+    ${f[k] ? `<button class="b x" style="margin-top:4px;padding:3px 8px" onclick="delete dados.fundosClima['${k}'];salvar();listarFundos()">Voltar à padrão</button>` : ''}</div>`).join('');
+}
+async function trocarFundo(k, inp) {
+  if (!inp.files[0]) return;
+  dados.fundosClima = dados.fundosClima || {};
+  const v = await guardarImagem(inp.files[0], 1920, 0.8); if (!v) return;
+  dados.fundosClima[k] = v;
+  salvar(); listarFundos();
+}
+function tudo() { listarFundos(); preencherSelectsCanal(); listarSlides(); listarCanais(); listarNoticias(); urlsTV(); atualizarTamanho(); }
+
+/* ---------- Abas ---------- */
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.aba').forEach(a => a.classList.toggle('on', a.id === 'aba-' + b.dataset.aba));
+  if (b.dataset.aba === 'publicar') urlsTV();
+});
+
+/* ---------- Agenda (igual ao player) ---------- */
+function noAr(s, canalId) {
+  const agora = new Date();
+  if (s.ativo === false) return false;
+  if (canalId && s.canais && s.canais.length && !s.canais.includes(canalId)) return false;
+  const local = new Date(agora.getTime() - agora.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  if (s.inicio && local < s.inicio) return false;
+  if (s.fim && local > s.fim) return false;
+  if (s.dias && s.dias.length && !s.dias.includes(['dom','seg','ter','qua','qui','sex','sab'][agora.getDay()])) return false;
+  const hm = agora.toTimeString().slice(0,5);
+  if (s.horaIni && s.horaFim) { if (s.horaIni <= s.horaFim) { if (hm < s.horaIni || hm > s.horaFim) return false; } else if (hm < s.horaIni && hm > s.horaFim) return false; }
+  else if (s.horaIni && hm < s.horaIni) return false; else if (s.horaFim && hm > s.horaFim) return false;
+  return true;
+}
+
+/* ---------- Selects de canal ---------- */
+function preencherSelectsCanal() {
+  const op = dados.canais.map(c => `<option value="${esc(c.id)}">${esc(c.nome)}</option>`).join('');
+  const f = $('filtroCanal').value;
+  $('filtroCanal').innerHTML = '<option value="">Todos</option>' + op; $('filtroCanal').value = f;
+  const p = $('previaCanal').value;
+  $('previaCanal').innerHTML = op; if (p) $('previaCanal').value = p;
+}
+
+/* ---------- CONTEÚDOS ---------- */
+function listarSlides() {
+  const f = $('filtroCanal').value;
+  const itens = dados.slides.map((s, i) => ({s, i})).filter(({s}) => !f || !s.canais || !s.canais.length || s.canais.includes(f));
+  $('listaSlides').innerHTML = itens.length ? itens.map(({s, i}) => `
+    <div class="item ${s.id === slideSel ? 'sel' : ''} ${s.ativo === false ? 'off' : ''}" onclick="editarSlide('${s.id}')">
+      <span class="st ${noAr(s, f || null) ? 'ar' : 'fora'}" title="${noAr(s, f || null) ? 'no ar agora' : 'fora do ar agora'}"></span>
+      <span class="tipo">${NOMES_TIPO[s.tipo] || s.tipo}</span>
+      <span class="nome">${esc(s.titulo || s.etiqueta || '(sem título)')}</span>
+      <button class="b" style="padding:2px 7px" onclick="event.stopPropagation();mover(${i},-1)">↑</button>
+      <button class="b" style="padding:2px 7px" onclick="event.stopPropagation();mover(${i},1)">↓</button>
+    </div>`).join('') : '<div class="vazio">Nenhum conteúdo.</div>';
+}
+function mover(i, d) { const j = i + d; if (j < 0 || j >= dados.slides.length) return; [dados.slides[i], dados.slides[j]] = [dados.slides[j], dados.slides[i]]; salvar(); listarSlides(); }
+
+function novoSlide() {
+  const tipo = $('novoTipo').value;
+  const f = $('filtroCanal').value;
+  const s = {id: uid('s'), tipo, ativo: true, titulo: '', texto: '', etiqueta: '', duracao: 10, canais: f ? [f] : [], dias: [], inicio: '', fim: '', horaIni: '', horaFim: '', repetir: 1};
+  if (tipo === 'aviso') { s.etiqueta = 'Comunicado'; s.titulo = 'Novo comunicado'; }
+  if (tipo === 'campanha') { s.etiqueta = 'Campanha'; s.titulo = 'Nome da campanha'; s.chamada = ''; s.cor = ''; }
+  if (tipo === 'indicador') { s.destaque = '100%'; s.titulo = 'Descrição do indicador'; }
+  if (tipo === 'noticia') { s.etiqueta = 'Notícia'; s.dataTexto = new Date().toLocaleDateString('pt-BR'); }
+  if (tipo === 'video') s.duracao = '';
+  if (tipo === 'relogio') s.duracao = 8;
+  if (tipo === 'clima') { s.titulo = 'Previsão do tempo'; s.duracao = 10; }
+  if (tipo === 'manchetes') { s.titulo = 'Últimas notícias'; s.etiqueta = 'Últimas notícias'; s.duracao = 15; s.quantidade = ''; }
+  dados.slides.push(s); salvar(); editarSlide(s.id);
+}
+
+function campo(rot, chave, s, tipo = 'text', extra = '') {
+  return `<label>${rot}</label><input type="${tipo}" value="${esc(s[chave] ?? '')}" oninput="setS('${chave}', this.value)" ${extra}>`;
+}
+function editarSlide(id) {
+  slideSel = id; listarSlides();
+  const s = dados.slides.find(x => x.id === id);
+  if (!s) { $('editorSlide').innerHTML = '<div class="vazio">Selecione um conteúdo.</div>'; return; }
+  const t = s.tipo;
+  const temTexto = ['aviso','campanha','noticia','indicador'].includes(t);
+  let h = `<div class="barra" style="justify-content:space-between"><h2 style="margin:0">${NOMES_TIPO[t]}</h2>
+    <div class="barra" style="margin:0">
+      <label class="chips" style="margin:0"><label><input type="checkbox" ${s.ativo !== false ? 'checked' : ''} onchange="setS('ativo', this.checked)"> Ativo</label></label>
+      <button class="b" onclick="duplicar('${id}')">Duplicar</button>
+      <button class="b x" onclick="excluirSlide('${id}')">Excluir</button></div></div>`;
+  if (temTexto) {
+    h += campo('Etiqueta (faixa colorida acima do título)', 'etiqueta', s);
+    if (t === 'indicador') h += campo('Número em destaque', 'destaque', s, 'text', 'placeholder="ex.: 98% ou 120 dias"');
+    h += campo('Título', 'titulo', s) + `<div class="dica">Dica: <code>*palavra*</code> fica em <b>rosa/roxo</b> (destaque) e <code>**palavra**</code> fica em <b>negrito</b>. Ex.: Descontos *exclusivos* para *você*</div>`;
+    h += `<label>Texto</label><textarea oninput="setS('texto', this.value)">${esc(s.texto)}</textarea>`;
+    if (t === 'campanha' || t === 'aviso') h += campo('Chamada (botão)', 'chamada', s, 'text', 'placeholder="ex.: Quero meu cartão"');
+    if (t === 'campanha' || t === 'aviso') {
+      const padrao = t === 'campanha' && !s.imagem ? 'cartoes' : t === 'aviso' ? 'coracao' : 'nenhuma';
+      h += `<label>Arte decorativa (visual Bem Fazer)</label><select onchange="setS('arte', this.value);editarSlide('${id}')">
+        ${[['', 'Automática'], ['cartoes', 'Cartões flutuando'], ['coracao', 'Coração com brilho'], ['nenhuma', 'Nenhuma']].map(([v, n]) =>
+          `<option value="${v}" ${(s.arte || '') === v ? 'selected' : ''}>${n}</option>`).join('')}</select>`;
+      if ((s.arte || padrao) === 'cartoes') h += campo('Selo 1 (sobre os cartões)', 'selo1', s, 'text', 'placeholder="Tudo a partir de **R$ 29,90** por mês"')
+        + campo('Selo 2', 'selo2', s, 'text', 'placeholder="Desconto de **até 80%**"');
+    }
+    if (t === 'noticia') h += campo('Data exibida', 'dataTexto', s);
+    if (t === 'campanha') h += `<label>Cor do bloco de texto (opcional)</label><input type="color" value="${s.cor || '#0e7c86'}" oninput="setS('cor', this.value)"> <button class="b" onclick="setS('cor','');editarSlide('${id}')">usar cor do canal</button>`;
+  }
+  if (t === 'relogio') h += campo('Frase abaixo do relógio (opcional)', 'titulo', s);
+  if (t === 'clima') h += `<div class="aviso-box">Mostra o tempo agora e a previsão dos próximos 3 dias da cidade configurada no canal (padrão: Altamira).
+    <b>Só aparece quando a TV tem internet</b>; sem internet ele é pulado e a TV segue com os outros conteúdos e mídias salvas.</div>` + campo('Nome na lista (só para você)', 'titulo', s);
+  if (t === 'manchetes') h += `<div class="aviso-box">Mostra as manchetes mais recentes (título, fonte e horário) buscadas pelo robô de notícias (veja o LEIA-ME).
+    A cada exibição mostra manchetes diferentes. <b>Só aparece quando a TV tem internet.</b></div>`
+    + campo('Etiqueta', 'etiqueta', s) + campo('Quantas manchetes por tela (1 a 6, vazio = automático)', 'quantidade', s, 'number', 'min="1" max="6"');
+  if (['campanha','noticia','imagem'].includes(t)) {
+    h += `<label>Imagem</label>
+      <input type="file" accept="image/*" onchange="carregarImagem(this)">
+      <div class="dica">A imagem é reduzida e enviada para a hospedagem automaticamente (com login). Ou cole um endereço:</div>
+      <input type="url" placeholder="https://… ou midia/arquivo.jpg" value="${s.imagem && !s.imagem.startsWith('data:') ? esc(s.imagem) : ''}" oninput="setS('imagem', this.value)">
+      ${s.imagem ? `<img class="miniatura" src="${esc(srcPrev(s.imagem))}"><button class="b x" style="margin-top:6px" onclick="setS('imagem','');editarSlide('${id}')">Remover imagem</button>` : ''}`;
+    if (t === 'imagem') h += `<label>Ajuste</label><select onchange="setS('ajuste', this.value)">
+      <option value="contain" ${s.ajuste !== 'cover' ? 'selected' : ''}>Mostrar inteira (com bordas)</option>
+      <option value="cover" ${s.ajuste === 'cover' ? 'selected' : ''}>Preencher a tela (corta as bordas)</option></select>`;
+  }
+  if (t === 'video') {
+    h += `<label>Enviar vídeo (MP4)</label><input type="file" accept="video/mp4,video/*" onchange="carregarVideo(this)">`;
+    h += campo('ou endereço do vídeo', 'video', s, 'url', 'placeholder="midia/video.mp4 ou https://…/video.mp4"');
+    h += `<div class="dica">Com login, o vídeo é enviado direto para a hospedagem (até 95 MB). Use MP4 H.264, até 1080p. O vídeo toca sem som. Depois de publicar, o totem baixa e guarda o vídeo para tocar mesmo sem internet.</div>`;
+  }
+  h += `<div class="linha">
+    <div><label>Duração (segundos)</label><input type="number" min="3" value="${esc(s.duracao)}" placeholder="${t === 'video' ? 'até o fim' : '10'}" oninput="setS('duracao', this.value)"></div>
+    <div><label>Frequência na fila</label><select onchange="setS('repetir', this.value)">
+      ${[1,2,3].map(n => `<option value="${n}" ${String(s.repetir||1) === String(n) ? 'selected' : ''}>${n === 1 ? 'Normal' : n + 'x por ciclo'}</option>`).join('')}</select></div></div>
+    <h2 style="margin-top:18px">Onde e quando</h2>
+    <label>Canais (nenhum marcado = todos)</label>
+    <div class="chips">${dados.canais.map(c => `<label><input type="checkbox" ${(s.canais||[]).includes(c.id) ? 'checked' : ''} onchange="toggleArr('canais','${c.id}',this.checked)"> ${esc(c.nome)}</label>`).join('')}</div>
+    <div class="linha"><div><label>De (data)</label><input type="date" value="${esc(s.inicio)}" onchange="setS('inicio', this.value)"></div>
+      <div><label>Até (data)</label><input type="date" value="${esc(s.fim)}" onchange="setS('fim', this.value)"></div>
+      <div><label>Das (hora)</label><input type="time" value="${esc(s.horaIni)}" onchange="setS('horaIni', this.value)"></div>
+      <div><label>Até (hora)</label><input type="time" value="${esc(s.horaFim)}" onchange="setS('horaFim', this.value)"></div></div>
+    <label>Dias da semana (nenhum marcado = todos)</label>
+    <div class="chips">${DIAS.map(([k, n]) => `<label><input type="checkbox" ${(s.dias||[]).includes(k) ? 'checked' : ''} onchange="toggleArr('dias','${k}',this.checked)"> ${n}</label>`).join('')}</div>`;
+  $('editorSlide').innerHTML = h;
+}
+function setS(k, v) { const s = dados.slides.find(x => x.id === slideSel); if (!s) return; s[k] = v; salvar(); listarSlides(); }
+function toggleArr(k, v, on) { const s = dados.slides.find(x => x.id === slideSel); s[k] = (s[k] || []).filter(x => x !== v); if (on) s[k].push(v); salvar(); listarSlides(); }
+function duplicar(id) { const s = dados.slides.find(x => x.id === id); const c = JSON.parse(JSON.stringify(s)); c.id = uid('s'); c.titulo = (c.titulo || '') + ' (cópia)'; dados.slides.splice(dados.slides.indexOf(s) + 1, 0, c); salvar(); editarSlide(c.id); }
+function excluirSlide(id) { if (!confirm('Excluir este conteúdo?')) return; dados.slides = dados.slides.filter(x => x.id !== id); slideSel = null; salvar(); listarSlides(); $('editorSlide').innerHTML = '<div class="vazio">Excluído.</div>'; }
+
+function reduzirImagem(file, max = 1600, q = 0.82) {
+  return new Promise((ok, erro) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const cv = document.createElement('canvas'); cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+      const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url); ok(cv.toDataURL('image/jpeg', q));
+    };
+    img.onerror = erro; img.src = url;
+  });
+}
+async function carregarImagem(inp) { if (!inp.files[0]) return; const v = await guardarImagem(inp.files[0], 1600, 0.82); if (v) { setS('imagem', v); editarSlide(slideSel); } }
+async function carregarVideo(inp) {
+  const f = inp.files[0]; if (!f) return;
+  if (!nuvem.cred) return alert('Para enviar vídeos é preciso entrar com login (o vídeo vai para a hospedagem).');
+  if (f.size > 95 * 1024 * 1024) return alert('Vídeo maior que 95 MB. Reduza a resolução (1080p) ou o tamanho antes de enviar.');
+  const path = await subirMidia(f, f.name);
+  if (path) { setS('video', path); editarSlide(slideSel); }
+}
+// imagem: com login sobe para midia/ (programação fica leve); sem login fica embutida
+async function guardarImagem(file, max, q, png = false) {
+  const dataURI = png ? await reduzirPNG(file, max) : await reduzirImagem(file, max, q);
+  if (!nuvem.cred) return dataURI;
+  const blob = await (await fetch(dataURI)).blob();
+  const path = await subirMidia(blob, file.name.replace(/\.[^.]+$/, '') + (png ? '.png' : '.jpg'));
+  if (path) nuvem.previas[path] = dataURI;
+  return path;
+}
+function srcPrev(u) { return nuvem.previas[u] || u; }
+
+/* ---------- NOTÍCIAS ---------- */
+function listarNoticias() {
+  $('tabNoticias').innerHTML = dados.noticias.length ? dados.noticias.map((n, i) => `<tr>
+    <td><input type="text" value="${esc(n.texto)}" oninput="dados.noticias[${i}].texto=this.value;salvar()"></td>
+    <td><div class="chips">${dados.canais.map(c => `<label style="padding:2px 7px;font-size:12px"><input type="checkbox" ${(n.canais||[]).includes(c.id) ? 'checked' : ''} onchange="toggleNot(${i},'${c.id}',this.checked)">${esc(c.nome)}</label>`).join('')}</div></td>
+    <td><input type="date" value="${esc(n.fim)}" onchange="dados.noticias[${i}].fim=this.value;salvar()"></td>
+    <td><input type="checkbox" ${n.ativo !== false ? 'checked' : ''} onchange="dados.noticias[${i}].ativo=this.checked;salvar()"></td>
+    <td><button class="b x" onclick="dados.noticias.splice(${i},1);salvar();listarNoticias()">✕</button></td></tr>`).join('')
+    : '<tr><td colspan="5" class="vazio">Nenhuma notícia. O rodapé fica oculto.</td></tr>';
+}
+function novaNoticia() { dados.noticias.push({id: uid('n'), texto: '', canais: [], fim: '', ativo: true}); salvar(); listarNoticias(); }
+function toggleNot(i, c, on) { const n = dados.noticias[i]; n.canais = (n.canais || []).filter(x => x !== c); if (on) n.canais.push(c); salvar(); }
+
+/* ---------- CANAIS ---------- */
+function listarCanais() {
+  $('listaCanais').innerHTML = dados.canais.map(c => `<div class="item ${c.id === canalSel ? 'sel' : ''}" onclick="editarCanal('${c.id}')">
+    <span class="st" style="background:${esc(c.cor)}"></span><span class="nome">${esc(c.nome)}</span><span class="tipo">${c.orientacao === 'vertical' ? 'vertical' : c.orientacao === 'horizontal' ? 'horizontal' : 'automática'}</span></div>`).join('');
+}
+function novoCanal() { const c = {id: uid('canal'), nome: 'Bem Fazer Card', orientacao: 'auto', cor: '#123d7a', fundo: '#0a2140', destaque: '#ffffff', duracaoPadrao: 10, rodape: false, logoNoM: true}; dados.canais.push(c); salvar(); tudo(); editarCanal(c.id); }
+function editarCanal(id) {
+  canalSel = id; listarCanais();
+  const c = dados.canais.find(x => x.id === id); if (!c) return;
+  const cc = (rot, k, tipo = 'text', extra = '') => `<label>${rot}</label><input type="${tipo}" value="${esc(c[k] ?? '')}" oninput="setC('${k}', this.value)" ${extra}>`;
+  $('editorCanal').innerHTML = `<div class="barra" style="justify-content:space-between"><h2 style="margin:0">Canal</h2><button class="b x" onclick="excluirCanal('${id}')">Excluir canal</button></div>
+    ${cc('Nome exibido no topo da tela', 'nome')}
+    <label>Identificador (usado no endereço da TV)</label>
+    <input type="text" value="${esc(c.id)}" onchange="renomearId('${id}', this.value)">
+    <div class="dica">Só letras minúsculas, números e hífen. Se mudar, atualize o endereço no Fully Kiosk.</div>
+    <div class="linha">
+      <div><label>Orientação da tela</label><select onchange="setC('orientacao', this.value)">
+        <option value="auto" ${c.orientacao !== 'vertical' && c.orientacao !== 'horizontal' ? 'selected' : ''}>Automática (detecta pela tela)</option>
+        <option value="vertical" ${c.orientacao === 'vertical' ? 'selected' : ''}>Sempre vertical (em pé)</option>
+        <option value="horizontal" ${c.orientacao === 'horizontal' ? 'selected' : ''}>Sempre horizontal (deitada)</option></select>
+        <div class="dica">Monitor em pé mas a imagem aparece deitada? Gire no Windows (Configurações › Tela › Orientação: Retrato) ou use o endereço com <code>&girar=90</code>.</div></div>
+      <div><label>Duração padrão (s)</label><input type="number" min="3" value="${esc(c.duracaoPadrao || 10)}" oninput="setC('duracaoPadrao', this.value)"></div></div>
+    <div class="linha">
+      <div><label>Cor principal</label><input type="color" value="${esc(c.cor)}" oninput="setC('cor', this.value)"></div>
+      <div><label>Cor de fundo</label><input type="color" value="${esc(c.fundo)}" oninput="setC('fundo', this.value)"></div>
+      <div><label>Cor de destaque</label><input type="color" value="${esc(c.destaque)}" oninput="setC('destaque', this.value)"></div></div>
+    <label>Logo (de preferência PNG com fundo transparente ou SVG, versão branca)</label><input type="file" accept="image/*" onchange="logoCanal(this)">
+    ${c.logo ? `<img class="miniatura" src="${esc(srcPrev(c.logo))}" style="background:${esc(c.cor)};padding:6px"><button class="b x" style="margin-top:6px" onclick="setC('logo','');editarCanal('${id}')">Remover logo</button>` : ''}
+    <div class="chips" style="margin-top:14px">
+      <label><input type="checkbox" ${c.cabecalho !== false ? 'checked' : ''} onchange="setC('cabecalho', this.checked)"> Mostrar topo (logo + relógio)</label>
+      <label><input type="checkbox" ${c.mostrarNome !== false ? 'checked' : ''} onchange="setC('mostrarNome', this.checked)"> Mostrar nome no topo</label>
+      <label><input type="checkbox" ${c.logoNoM ? 'checked' : ''} onchange="setC('logoNoM', this.checked)"> Logo no lugar da letra M do nome</label>
+      <label><input type="checkbox" ${c.rodape === true ? 'checked' : ''} onchange="setC('rodape', this.checked)"> Mostrar faixa de rodapé</label></div>
+    ${cc('Rótulo do rodapé', 'rotuloRodape', 'text', 'placeholder="Notícias"')}
+    <div class="linha">
+      <div><label>Visual</label><select onchange="setC('tema', this.value)">
+        <option value="bemfazer" ${c.tema === 'bemfazer' ? 'selected' : ''}>Bem Fazer Card (igual ao site)</option>
+        <option value="" ${c.tema !== 'bemfazer' ? 'selected' : ''}>Simples (usa as cores abaixo)</option></select></div>
+      <div><label>Animação entre conteúdos</label><select onchange="setC('transicao', this.value)">
+        ${[['aleatoria','Variada (alterna sozinha)'],['deslizar','Deslizar'],['zoom','Zoom'],['subir','Subir'],['cortina','Cortina'],['fade','Esmaecer (suave)']]
+          .map(([v,n]) => `<option value="${v}" ${(c.transicao || 'aleatoria') === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
+    <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas imagens</label></div>
+    <h2 style="margin-top:18px">Com internet</h2>
+    <div class="chips">
+      <label><input type="checkbox" ${c.clima !== false ? 'checked' : ''} onchange="setC('clima', this.checked)"> Temperatura no topo</label>
+      <label><input type="checkbox" ${c.manchetesRodape ? 'checked' : ''} onchange="setC('manchetesRodape', this.checked)"> Manchetes também no rodapé</label></div>
+    <div class="linha">
+      <div><label>Cidade do clima</label><input type="text" value="${esc(c.cidade || 'Altamira')}" oninput="setC('cidade', this.value)"></div>
+      <div><label>Latitude</label><input type="text" value="${esc(c.lat || '-3.2033')}" oninput="setC('lat', this.value)"></div>
+      <div><label>Longitude</label><input type="text" value="${esc(c.lon || '-52.2064')}" oninput="setC('lon', this.value)"></div></div>
+    <div class="dica">Sem internet, a TV esconde clima e manchetes automaticamente e continua com os conteúdos e mídias já salvos nela.</div>`;
+}
+function setC(k, v) { const c = dados.canais.find(x => x.id === canalSel); c[k] = v; salvar(); listarCanais(); preencherSelectsCanal(); }
+async function logoCanal(inp) { if (!inp.files[0]) return; const f = inp.files[0];
+  let url;
+  if (f.type === 'image/svg+xml') {
+    url = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(f); });
+    if (nuvem.cred) { const pth = await subirMidia(f, f.name); if (pth) { nuvem.previas[pth] = url; url = pth; } }
+  } else url = await guardarImagem(f, 600, 0, true);
+  if (url) { setC('logo', url); editarCanal(canalSel); } }
+function reduzirPNG(file, max = 600) { return new Promise(ok => { const img = new Image(), u = URL.createObjectURL(file); img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)); const cv = document.createElement('canvas'); cv.width = img.width * k; cv.height = img.height * k; cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); ok(cv.toDataURL('image/png')); }; img.src = u; }); }
+function renomearId(antigo, novo) {
+  novo = novo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!novo || novo === antigo) return editarCanal(antigo);
+  if (dados.canais.some(c => c.id === novo)) { alert('Já existe um canal com esse identificador.'); return editarCanal(antigo); }
+  dados.canais.find(c => c.id === antigo).id = novo;
+  [...dados.slides, ...dados.noticias].forEach(s => { if (s.canais) s.canais = s.canais.map(x => x === antigo ? novo : x); });
+  canalSel = novo; salvar(); tudo(); editarCanal(novo);
+}
+function excluirCanal(id) { if (dados.canais.length === 1) return alert('É preciso ter pelo menos um canal.'); if (!confirm('Excluir este canal? Os conteúdos continuam, mas deixam de apontar para ele.')) return;
+  dados.canais = dados.canais.filter(c => c.id !== id); [...dados.slides, ...dados.noticias].forEach(s => { if (s.canais) s.canais = s.canais.filter(x => x !== id); });
+  canalSel = null; salvar(); tudo(); $('editorCanal').innerHTML = '<div class="vazio">Excluído.</div>'; }
+
+/* ---------- PRÉVIA ---------- */
+window.addEventListener('message', e => {
+  if (e.data && e.data.tvcorpPronto) { const f = $('previaBox').querySelector('iframe'); if (f && e.source === f.contentWindow) f.contentWindow.postMessage({tvcorpPrevia: JSON.parse(JSON.stringify(dados))}, '*'); }
+});
+function abrirPrevia() {
+  const c = dados.canais.find(x => x.id === $('previaCanal').value) || dados.canais[0];
+  const vert = c.orientacao === 'vertical' || (c.orientacao !== 'horizontal' && $('previaForma').value === 'vertical');
+  const w = vert ? 405 : 960, hgt = vert ? 720 : 540;
+  $('previaBox').innerHTML = `<iframe width="${w}" height="${hgt}" src="player.html?canal=${encodeURIComponent(c.id)}&fonte=previa"></iframe>`;
+}
+
+/* ---------- PUBLICAR ---------- */
+function jsonFinal() { return JSON.stringify(dados, null, 1); }
+function atualizarTamanho() { const kb = new Blob([jsonFinal()]).size / 1024;
+  $('tamanho').innerHTML = `Tamanho da programação: <b>${kb < 1024 ? kb.toFixed(0) + ' KB' : (kb/1024).toFixed(1) + ' MB'}</b>` + (kb > 8000 ? ' <span style="color:var(--erro)">— pesado; prefira enviar imagens para a pasta midia/</span>' : ''); }
+function baixarJSON() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([jsonFinal()], {type: 'application/json'})); a.download = 'programacao.json'; a.click(); }
+function importarJSON(inp) { const f = inp.files[0]; if (!f) return; const fr = new FileReader(); fr.onload = () => { try { const d = JSON.parse(fr.result); if (!d.canais) throw 0; if (!confirm('Substituir tudo o que está no painel por este arquivo?')) return; dados = d; dados.noticias = dados.noticias || []; salvar(); tudo(); alert('Importado.'); } catch (e) { alert('Arquivo inválido.'); } }; fr.readAsText(f); inp.value = ''; }
+
+function baseURL() {
+  const d = nuvem.dono, r = nuvem.repo;
+  if (d && r) return `https://${d.toLowerCase()}.github.io/${r}/`;
+  if (location.protocol.startsWith('http')) return location.href.replace(/painel\.html.*$/, '');
+  return 'https://SEU-ENDERECO/';
+}
+function urlsTV() { const b = baseURL(); $('urlsTV').innerHTML = dados.canais.map(c => `<div style="margin:6px 0"><b>${esc(c.nome)}</b><br><code>${esc(b)}player.html?canal=${esc(c.id)}</code></div>`).join('') +
+  '<div class="dica" style="margin-top:8px">A orientação é detectada pela tela. Se o monitor está em pé mas a imagem aparece deitada, gire no Windows (Configurações › Sistema › Tela › Orientação da tela: <b>Retrato</b>) ou acrescente <code>&girar=90</code> ao endereço (use <code>&girar=270</code> se ficar de cabeça para baixo).</div>'; }
+
+function b64utf8(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
+
+/* =====================================================================
+   LOGIN E SINCRONIZAÇÃO (GitHub como hospedagem)
+   - acesso.json guarda o token do GitHub CIFRADO com a senha de cada usuário
+     (PBKDF2 + AES-GCM). Sem a senha, o token não pode ser lido.
+   - Ao entrar, o painel carrega a programação que está no ar; Publicar envia de volta.
+   ===================================================================== */
+const nuvem = { cred: null, dono: '', repo: '', sha: null, pendente: false, previas: {}, acesso: null };
+(function detectarRepo() {
+  const h = location.hostname;
+  if (h.endsWith('.github.io')) { nuvem.dono = h.split('.')[0]; nuvem.repo = location.pathname.split('/').filter(Boolean)[0] || ''; }
+})();
+const te = new TextEncoder(), td = new TextDecoder();
+const b64 = buf => { const u = new Uint8Array(buf); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
+const unb64 = t => Uint8Array.from(atob(t), c => c.charCodeAt(0));
+async function chaveDaSenha(senha, salt) {
+  const base = await crypto.subtle.importKey('raw', te.encode(senha), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name: 'PBKDF2', salt, iterations: 310000, hash: 'SHA-256'}, base, {name: 'AES-GCM', length: 256}, false, ['encrypt', 'decrypt']);
+}
+async function cifrar(texto, senha) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({name: 'AES-GCM', iv}, await chaveDaSenha(senha, salt), te.encode(texto));
+  return {salt: b64(salt), iv: b64(iv), dado: b64(ct)};
+}
+async function decifrar(o, senha) {
+  const pt = await crypto.subtle.decrypt({name: 'AES-GCM', iv: unb64(o.iv)}, await chaveDaSenha(senha, unb64(o.salt)), unb64(o.dado));
+  return td.decode(pt);
+}
+
+async function gh(caminho, opts = {}, token = nuvem.cred && nuvem.cred.token) {
+  const h = {Accept: 'application/vnd.github+json', ...(opts.headers || {})};
+  if (token) h.Authorization = 'Bearer ' + token;
+  return fetch(`https://api.github.com/repos/${encodeURIComponent(nuvem.dono)}/${encodeURIComponent(nuvem.repo)}${caminho}`, {...opts, headers: h, cache: 'no-store'});
+}
+async function lerArquivo(path) {
+  const r = await gh('/contents/' + path + '?t=' + Date.now());
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error('Leitura de ' + path + ': HTTP ' + r.status);
+  const j = await r.json();
+  let texto;
+  if (j.content && j.encoding === 'base64') texto = td.decode(unb64(j.content.replace(/\n/g, '')));
+  else { const r2 = await gh('/contents/' + path + '?t=' + Date.now(), {headers: {Accept: 'application/vnd.github.raw+json'}}); texto = await r2.text(); }
+  return {texto, sha: j.sha};
+}
+async function escreverArquivo(path, conteudoB64, sha, msg, token) {
+  const r = await gh('/contents/' + path, {method: 'PUT', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({message: msg, content: conteudoB64, sha: sha || undefined})}, token);
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error('Envio de ' + path + ': HTTP ' + r.status + ' ' + (e.message || '')); }
+  return (await r.json()).content.sha;
+}
+async function subirMidia(blob, nome) {
+  const st = $('salvo'); st.textContent = '⏳ Enviando mídia…';
+  try {
+    const limpo = nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '') || 'arquivo';
+    const carimbo = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+    const path = `midia/${carimbo}-${limpo}`;
+    const dataURL = await new Promise((ok, erro) => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.onerror = erro; fr.readAsDataURL(blob); });
+    await escreverArquivo(path, dataURL.split(',')[1], null, 'Nova mídia ' + limpo);
+    st.textContent = '✔ Mídia enviada';
+    return path;
+  } catch (e) { st.textContent = '⚠ Falha ao enviar mídia'; alert('Não foi possível enviar a mídia: ' + e.message); return null; }
+}
+
+async function lerAcesso() {
+  // acesso.json é público (só tem dados cifrados); lê pelo próprio site ou pela API
+  try { const r = await fetch('acesso.json?t=' + Date.now(), {cache: 'no-store'}); if (r.ok) return {json: await r.json()}; } catch (_) {}
+  try { const r = await gh('/contents/acesso.json?t=' + Date.now(), {headers: {Accept: 'application/vnd.github.raw+json'}}, null); if (r.ok) return {json: await r.json()}; if (r.status === 404) return {json: null}; } catch (_) {}
+  return {json: null, erro: true};
+}
+
+async function iniciarLogin() {
+  // sessão já aberta (mesma aba) ou "manter conectado"
+  let sess = null;
+  try { sess = JSON.parse(sessionStorage.getItem('tvcorp_sessao') || localStorage.getItem('tvcorp_sessao') || 'null'); } catch (_) {}
+  if (sess && sess.token) { nuvem.cred = sess; nuvem.dono = sess.dono; nuvem.repo = sess.repo; $('login').style.display = 'none'; aposEntrar(false); return; }
+  if (sessionStorage.getItem('tvcorp_local')) { $('login').style.display = 'none'; mostrarEstado(); return; }
+  if (!nuvem.dono) { $('crRepoBox').style.display = ''; }
+  else $('crRepoBox').style.display = 'none';
+  const a = nuvem.dono ? await lerAcesso() : {json: null};
+  nuvem.acesso = a.json;
+  if (!a.json && !a.erro) { $('loginEntrar').style.display = 'none'; $('loginCriar').style.display = ''; }
+  if (!nuvem.dono) {   // aberto fora do GitHub Pages (ex.: arquivo no computador)
+    $('loginEntrar').style.display = 'none'; $('loginCriar').style.display = '';
+    $('crMsg').innerHTML = '<div class="aviso-box">Para usar com login, abra o painel pelo endereço da hospedagem (<code>https://SEU-USUARIO.github.io/REPOSITÓRIO/painel.html</code>). Se o acesso já foi criado, só preencha usuário do GitHub e repositório e clique em <b>Já tenho acesso</b>.</div><button class="b" onclick="jaTenhoAcesso()">Já tenho acesso</button>';
+  }
+}
+async function jaTenhoAcesso() {
+  nuvem.dono = $('crDono').value.trim(); nuvem.repo = $('crRepo').value.trim();
+  const a = await lerAcesso(); nuvem.acesso = a.json;
+  if (!a.json) { $('crMsg').innerHTML = '<div class="erro-box">Não encontrei o acesso nesse repositório.</div>'; return; }
+  $('loginCriar').style.display = 'none'; $('loginEntrar').style.display = '';
+}
+
+async function entrar() {
+  const usuario = $('lgUsuario').value.trim().toLowerCase(), senha = $('lgSenha').value;
+  const msg = $('lgMsg'); msg.innerHTML = '<div class="aviso-box">Entrando…</div>';
+  try {
+    if (!nuvem.acesso) { const a = await lerAcesso(); nuvem.acesso = a.json; }
+    const u = nuvem.acesso && (nuvem.acesso.usuarios || []).find(x => x.usuario === usuario);
+    if (!u) throw new Error('Usuário ou senha incorretos.');
+    let token;
+    try { token = await decifrar(u, senha); } catch (_) { throw new Error('Usuário ou senha incorretos.'); }
+    nuvem.dono = nuvem.acesso.dono || nuvem.dono; nuvem.repo = nuvem.acesso.repo || nuvem.repo;
+    const r = await gh('', {}, token);
+    if (r.status === 401) throw new Error('O token do GitHub expirou ou foi revogado. Gere um novo e recrie o acesso (veja o LEIA-ME).');
+    nuvem.cred = {usuario, token, dono: nuvem.dono, repo: nuvem.repo};
+    guardarSessao($('lgLembrar').checked);
+    $('lgSenha').value = ''; msg.innerHTML = '';
+    $('login').style.display = 'none';
+    await aposEntrar(true);
+  } catch (e) { msg.innerHTML = `<div class="erro-box">${esc(e.message)}</div>`; }
+}
+function guardarSessao(lembrar) {
+  const t = JSON.stringify(nuvem.cred);
+  sessionStorage.setItem('tvcorp_sessao', t);
+  if (lembrar) localStorage.setItem('tvcorp_sessao', t); else localStorage.removeItem('tvcorp_sessao');
+}
+async function criarAcesso() {
+  const msg = $('crMsg');
+  const usuario = $('crUsuario').value.trim().toLowerCase(), senha = $('crSenha').value, token = $('crToken').value.trim();
+  if (!nuvem.dono) { nuvem.dono = $('crDono').value.trim(); nuvem.repo = $('crRepo').value.trim(); }
+  if (!nuvem.dono || !nuvem.repo) return msg.innerHTML = '<div class="erro-box">Informe usuário do GitHub e repositório.</div>';
+  if (!/^[a-z0-9._-]{2,30}$/.test(usuario)) return msg.innerHTML = '<div class="erro-box">Usuário: só letras minúsculas, números, ponto, hífen.</div>';
+  if (senha.length < 10) return msg.innerHTML = '<div class="erro-box">A senha precisa ter pelo menos 10 caracteres.</div>';
+  if (senha !== $('crSenha2').value) return msg.innerHTML = '<div class="erro-box">As senhas não conferem.</div>';
+  msg.innerHTML = '<div class="aviso-box">Verificando o token…</div>';
+  try {
+    const r = await gh('', {}, token);
+    if (!r.ok) throw new Error('Token inválido ou sem acesso a ' + nuvem.dono + '/' + nuvem.repo + ' (HTTP ' + r.status + ').');
+    const info = await r.json();
+    if (info.permissions && !info.permissions.push) throw new Error('O token não tem permissão de escrita (Contents: Read and write).');
+    const existente = await lerArquivo.call(null, 'acesso.json').catch(() => null);
+    const acesso = existente ? JSON.parse(existente.texto) : {versao: 1, dono: nuvem.dono, repo: nuvem.repo, usuarios: []};
+    acesso.usuarios = acesso.usuarios.filter(x => x.usuario !== usuario);
+    acesso.usuarios.push({usuario, ...(await cifrar(token, senha))});
+    nuvem.cred = {usuario, token, dono: nuvem.dono, repo: nuvem.repo};
+    await escreverArquivo('acesso.json', b64(te.encode(JSON.stringify(acesso, null, 1))), existente && existente.sha, 'Cria acesso ao painel', token);
+    nuvem.acesso = acesso;
+    guardarSessao(false);
+    $('login').style.display = 'none';
+    await aposEntrar(true);
+  } catch (e) { msg.innerHTML = `<div class="erro-box">${esc(e.message)}</div>`; }
+}
+function usarLocal() { sessionStorage.setItem('tvcorp_local', '1'); $('login').style.display = 'none'; mostrarEstado(); }
+function sair() {
+  if (nuvem.pendente && !confirm('Há alterações não publicadas. Sair mesmo assim? (elas ficam salvas neste computador)')) return;
+  sessionStorage.removeItem('tvcorp_sessao'); localStorage.removeItem('tvcorp_sessao'); sessionStorage.removeItem('tvcorp_local');
+  location.reload();
+}
+
+async function aposEntrar(carregar) {
+  nuvem.pendente = localStorage.getItem('tvcorp_pendente') === '1';
+  mostrarEstado(); urlsTV();
+  if (carregar || !nuvem.pendente) await carregarDaNuvem(false); else await atualizarSha();
+  if (!nuvem.acesso) { const ac = await lerAcesso(); nuvem.acesso = ac.json; }
+  listarUsuarios();
+}
+async function carregarDaNuvem(perguntar) {
+  if (!nuvem.cred) return;
+  if (perguntar && nuvem.pendente && !confirm('Descartar as alterações não publicadas deste computador e carregar o que está no ar?')) return;
+  if (!perguntar && nuvem.pendente) {
+    const manter = confirm('Este computador tem alterações que ainda não foram publicadas.\n\nOK = continuar editando elas\nCancelar = descartar e carregar o que está no ar');
+    if (manter) { await atualizarSha(); return; }
+  }
+  try {
+    const a = await lerArquivo('programacao.json');
+    if (a) { dados = JSON.parse(a.texto); nuvem.sha = a.sha; }
+    else { nuvem.sha = null; }
+    dados.noticias = dados.noticias || []; dados.slides = dados.slides || []; dados.canais = dados.canais || [];
+    try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch (_) {}
+    nuvem.pendente = false; localStorage.removeItem('tvcorp_pendente');
+    slideSel = null; canalSel = null; tudo(); mostrarEstado();
+    $('editorSlide').innerHTML = '<div class="vazio">Selecione um conteúdo ou crie um novo.</div>';
+  } catch (e) { $('salvo').textContent = '⚠ ' + e.message; }
+}
+async function atualizarSha() { try { const a = await lerArquivo('programacao.json'); nuvem.sha = a ? a.sha : null; } catch (_) {} }
+
+async function publicar() {
+  const st = $('pubStatus');
+  if (!nuvem.cred) { alert('Entre com login para publicar.'); return; }
+  $('btnPublicarTopo').disabled = true; $('salvo').textContent = '⏳ Publicando…';
+  try {
+    const atual = await lerArquivo('programacao.json');
+    if (atual && nuvem.sha && atual.sha !== nuvem.sha &&
+        !confirm('A programação foi alterada em outro computador depois que você carregou. Publicar a sua versão por cima?')) throw new Error('Publicação cancelada.');
+    nuvem.sha = await escreverArquivo('programacao.json', b64(te.encode(jsonFinal())), atual && atual.sha,
+      'Programação atualizada por ' + nuvem.cred.usuario + ' em ' + new Date().toLocaleString('pt-BR'));
+    nuvem.pendente = false; localStorage.removeItem('tvcorp_pendente');
+    const hora = new Date().toLocaleTimeString('pt-BR');
+    $('salvo').textContent = '✔ Publicado às ' + hora;
+    st.innerHTML = `<div class="ok-box">✔ Publicado às ${hora}. Os totens atualizam sozinhos em poucos minutos.</div>`;
+  } catch (e) { $('salvo').textContent = '⚠ Não publicou'; st.innerHTML = `<div class="erro-box">${esc(e.message)}</div>`; alert(e.message); }
+  $('btnPublicarTopo').disabled = false; mostrarEstado();
+}
+
+function mostrarEstado() {
+  const on = !!nuvem.cred;
+  $('btnPublicarTopo').style.display = on ? '' : 'none';
+  $('btnSair').style.display = '';
+  $('btnSair').textContent = on ? 'Sair' : 'Entrar';
+  $('usuarioTopo').textContent = on ? '👤 ' + nuvem.cred.usuario : 'sem login (só neste computador)';
+  $('pendente').style.display = on && nuvem.pendente ? 'inline-block' : 'none';
+  $('infoNuvem').innerHTML = on ? `Conectado a <b>${esc(nuvem.dono)}/${esc(nuvem.repo)}</b> como <b>${esc(nuvem.cred.usuario)}</b>. Edite à vontade e clique em <b>Publicar</b> quando quiser que apareça nos totens.`
+    : 'Você está sem login: as alterações ficam só neste computador. Clique em <b>Entrar</b> no topo para publicar.';
+}
+function listarUsuarios() {
+  const us = (nuvem.acesso && nuvem.acesso.usuarios) || [];
+  $('listaUsuarios').innerHTML = us.length ? us.map(u => `<div style="display:flex;align-items:center;gap:8px;margin:4px 0">👤 <b>${esc(u.usuario)}</b>
+    ${nuvem.cred && u.usuario !== nuvem.cred.usuario ? `<button class="b x" style="padding:2px 8px" onclick="removerUsuario('${esc(u.usuario)}')">remover</button>` : '<span class="dica">(você)</span>'}</div>`).join('') : 'Nenhum usuário.';
+}
+async function salvarAcesso(msg) {
+  const atual = await lerArquivo('acesso.json');
+  await escreverArquivo('acesso.json', b64(te.encode(JSON.stringify(nuvem.acesso, null, 1))), atual && atual.sha, msg);
+  listarUsuarios();
+}
+async function adicionarUsuario() {
+  const m = $('usrMsg');
+  if (!nuvem.cred) return m.innerHTML = '<div class="erro-box">Entre com login primeiro.</div>';
+  const usuario = $('nuUsuario').value.trim().toLowerCase(), senha = $('nuSenha').value;
+  if (!/^[a-z0-9._-]{2,30}$/.test(usuario)) return m.innerHTML = '<div class="erro-box">Usuário: só letras minúsculas, números, ponto, hífen.</div>';
+  if (senha.length < 10) return m.innerHTML = '<div class="erro-box">Senha com pelo menos 10 caracteres.</div>';
+  try {
+    nuvem.acesso.usuarios = nuvem.acesso.usuarios.filter(x => x.usuario !== usuario);
+    nuvem.acesso.usuarios.push({usuario, ...(await cifrar(nuvem.cred.token, senha))});
+    await salvarAcesso('Usuário ' + usuario + ' adicionado/atualizado');
+    $('nuUsuario').value = ''; $('nuSenha').value = '';
+    m.innerHTML = `<div class="ok-box">✔ Usuário <b>${esc(usuario)}</b> salvo.</div>`;
+  } catch (e) { m.innerHTML = `<div class="erro-box">${esc(e.message)}</div>`; }
+}
+async function removerUsuario(u) {
+  if (!confirm('Remover o usuário ' + u + '?')) return;
+  try { nuvem.acesso.usuarios = nuvem.acesso.usuarios.filter(x => x.usuario !== u); await salvarAcesso('Usuário ' + u + ' removido'); }
+  catch (e) { alert(e.message); }
+}
+// botão Entrar/Sair do topo
+$('btnSair').onclick = () => nuvem.cred ? sair() : (sessionStorage.removeItem('tvcorp_local'), location.reload());
+window.addEventListener('beforeunload', e => { if (nuvem.pendente) { e.preventDefault(); e.returnValue = ''; } });
+
+iniciar();
+</script>
+</body>
+</html>

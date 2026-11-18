@@ -1,0 +1,105 @@
+{
+ "versao": 1,
+ "atualizado": "2026-11-18T12:00:00.000Z",
+ "canais": [
+  {
+   "id": "bemfazer-loja",
+   "nome": "Bem Fazer Card",
+   "orientacao": "auto",
+   "cor": "#2a1450",
+   "fundo": "#130a24",
+   "destaque": "#e8217f",
+   "duracaoPadrao": 10,
+   "rodape": false,
+   "logoNoM": true,
+   "clima": true,
+   "cidade": "Altamira",
+   "transicao": "aleatoria",
+   "tema": "bemfazer"
+  }
+ ],
+ "slides": [
+  {
+   "id": "bf-economia",
+   "tipo": "campanha",
+   "ativo": true,
+   "canais": [],
+   "etiqueta": "Seu benefício começa aqui.",
+   "titulo": "Descontos *exclusivos* para *você*",
+   "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.",
+   "chamada": "Quero meu cartão",
+   "duracao": 12,
+   "repetir": 2,
+   "arte": "cartoes"
+  },
+  {
+   "id": "bf-planos",
+   "tipo": "aviso",
+   "ativo": true,
+   "canais": [],
+   "etiqueta": "Planos",
+   "titulo": "Tudo a partir de *R$ 29,90* por mês",
+   "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.",
+   "duracao": 12,
+   "chamada": "Fale com a gente no balcão"
+  },
+  {
+   "id": "bf-clima",
+   "tipo": "clima",
+   "ativo": true,
+   "canais": [],
+   "titulo": "Previsão do tempo",
+   "duracao": 10
+  },
+  {
+   "id": "bf-rede",
+   "tipo": "aviso",
+   "ativo": true,
+   "canais": [],
+   "etiqueta": "Rede parceira",
+   "titulo": "Use em *vários* lugares",
+   "texto": "Saúde • Mercados • Beleza\nMateriais elétricos • Celular\nAuto center • Educação",
+   "duracao": 12
+  },
+  {
+   "id": "bf-brinde",
+   "tipo": "aviso",
+   "ativo": true,
+   "canais": [],
+   "etiqueta": "Cliente em dia",
+   "titulo": "Tem *brinde* para você!",
+   "texto": "Clientes com a mensalidade em dia ganham brinde. Passe aqui na loja.",
+   "chamada": "Box 05 • Camelódromo",
+   "duracao": 10
+  },
+  {
+   "id": "bf-manchetes",
+   "tipo": "manchetes",
+   "ativo": true,
+   "canais": [],
+   "titulo": "Últimas notícias",
+   "etiqueta": "Últimas notícias",
+   "duracao": 15
+  },
+  {
+   "id": "bf-onde",
+   "tipo": "aviso",
+   "ativo": true,
+   "canais": [],
+   "etiqueta": "Onde estamos",
+   "titulo": "Box 05 – *Camelódromo* José Goes",
+   "texto": "Shopping de Variedades • Altamira\n**bemfazercard.com.br**",
+   "duracao": 10,
+   "arte": "nenhuma"
+  },
+  {
+   "id": "bf-relogio",
+   "tipo": "relogio",
+   "ativo": true,
+   "canais": [],
+   "titulo": "**bemfazercard.com.br**",
+   "duracao": 8
+  }
+ ],
+ "noticias": []
+}

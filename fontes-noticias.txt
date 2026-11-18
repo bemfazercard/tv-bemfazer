@@ -1,0 +1,6 @@
+# Fontes de manchetes (RSS). Uma por linha:  Nome exibido | endereço do RSS
+# Linhas começando com # são ignoradas. Fonte que falhar é pulada sem travar as outras.
+Agência Brasil | https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml
+Agência Brasil Saúde | https://agenciabrasil.ebc.com.br/rss/saude/feed.xml
+g1 Pará | https://g1.globo.com/rss/g1/pa/para/
+g1 Saúde | https://g1.globo.com/rss/g1/ciencia-e-saude/
