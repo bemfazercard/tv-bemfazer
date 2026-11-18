@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T20:27:45.640Z",
+ "atualizado": "2026-11-18T20:29:49.355Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -41,7 +41,8 @@
    "titulo": "Tudo a partir de *R$ 29,90* por mês",
    "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.",
    "duracao": 12,
-   "chamada": ""
+   "chamada": "",
+   "arte": "nenhuma"
   },
   {
    "id": "bf-clima",
