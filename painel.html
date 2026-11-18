@@ -416,8 +416,9 @@ function editarSlide(id) {
       <input type="url" placeholder="https://… ou midia/arquivo.jpg" value="${s.imagem && !s.imagem.startsWith('data:') ? esc(s.imagem) : ''}" oninput="setS('imagem', this.value)">
       ${s.imagem ? `<img class="miniatura" src="${esc(srcPrev(s.imagem))}"><button class="b x" style="margin-top:6px" onclick="setS('imagem','');editarSlide('${id}')">Remover imagem</button>` : ''}`;
     if (t === 'imagem') h += `<label>Ajuste</label><select onchange="setS('ajuste', this.value)">
-      <option value="contain" ${s.ajuste !== 'cover' ? 'selected' : ''}>Mostrar inteira (com bordas)</option>
-      <option value="cover" ${s.ajuste === 'cover' ? 'selected' : ''}>Preencher a tela (corta as bordas)</option></select>`;
+      <option value="contain" ${s.ajuste !== 'cover' ? 'selected' : ''}>Mostrar inteira — recomendado (não corta nada)</option>
+      <option value="cover" ${s.ajuste === 'cover' ? 'selected' : ''}>Preencher a tela (corta as bordas da arte)</option></select>
+      <div class="dica">Para a arte ocupar a tela toda sem cortar, faça no tamanho <b>1080 × 1800</b> (totem em pé, descontando a faixa do topo).</div>`;
   }
   if (t === 'video') {
     h += `<label>Enviar vídeo (MP4)</label><input type="file" accept="video/mp4,video/*" onchange="carregarVideo(this)">`;
@@ -529,7 +530,7 @@ function editarCanal(id) {
       <div><label>Animação entre conteúdos</label><select onchange="setC('transicao', this.value)">
         ${[['aleatoria','Variada (alterna sozinha)'],['deslizar','Deslizar'],['zoom','Zoom'],['subir','Subir'],['cortina','Cortina'],['fade','Esmaecer (suave)']]
           .map(([v,n]) => `<option value="${v}" ${(c.transicao || 'aleatoria') === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
-    <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas imagens</label></div>
+    <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas fotos de campanha (parceiros nunca têm zoom)</label></div>
     <h2 style="margin-top:18px">Com internet</h2>
     <div class="chips">
       <label><input type="checkbox" ${c.clima !== false ? 'checked' : ''} onchange="setC('clima', this.checked)"> Temperatura no topo</label>

@@ -562,7 +562,8 @@ function proximo() {
   const seg = Math.max(3, parseFloat(s.duracao || canal.duracaoPadrao || 10));
   const tr = escolherTransicao(s);
   el.classList.add('tr-' + tr);
-  if (['imagem', 'campanha'].includes(s.tipo) && s.imagem && canal.kenburns !== false) {
+  // zoom lento só em foto de campanha; arte/folheto de parceiro aparece inteira, sem zoom
+  if (s.tipo === 'campanha' && s.imagem && canal.kenburns !== false) {
     el.classList.add('kb'); if (Math.random() < .5) el.classList.add('kb2');
     el.style.setProperty('--dur', (seg + 1.5) + 's');
   }
