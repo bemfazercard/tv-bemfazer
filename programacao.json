@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T13:59:43.343Z",
+ "atualizado": "2026-11-18T14:52:54.987Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -41,7 +41,7 @@
    "titulo": "Tudo a partir de *R$ 29,90* por mês",
    "texto": "Plano Básico — **R$ 29,90/mês**\nPlano Mais — **R$ 179,90/mês**\nAssinatura anual.",
    "duracao": 12,
-   "chamada": "Fale com a gente no balcão"
+   "chamada": ""
   },
   {
    "id": "bf-clima",
@@ -62,17 +62,6 @@
    "duracao": 12
   },
   {
-   "id": "bf-brinde",
-   "tipo": "aviso",
-   "ativo": true,
-   "canais": [],
-   "etiqueta": "Cliente em dia",
-   "titulo": "Tem *brinde* para você!",
-   "texto": "Clientes com a mensalidade em dia ganham brinde. Passe aqui na loja.",
-   "chamada": "Box 05 • Camelódromo",
-   "duracao": 10
-  },
-  {
    "id": "bf-manchetes",
    "tipo": "manchetes",
    "ativo": true,
@@ -80,17 +69,6 @@
    "titulo": "Últimas notícias",
    "etiqueta": "Últimas notícias",
    "duracao": 15
-  },
-  {
-   "id": "bf-onde",
-   "tipo": "aviso",
-   "ativo": true,
-   "canais": [],
-   "etiqueta": "Onde estamos",
-   "titulo": "Box 05 – *Camelódromo* José Goes",
-   "texto": "Shopping de Variedades • Altamira\n**bemfazercard.com.br**",
-   "duracao": 10,
-   "arte": "nenhuma"
   },
   {
    "id": "bf-relogio",
