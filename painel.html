@@ -347,7 +347,7 @@ async function enviarLote(inp) {
   for (let i = 0; i < arqs.length; i++) {
     const f = arqs[i];
     st.innerHTML = `<div class="aviso-box">Enviando ${i + 1} de ${arqs.length}: ${esc(f.name)}…</div>`;
-    const path = await guardarImagem(f, 1600, 0.88);
+    const path = await guardarImagem(f, 1920, 0.88);
     if (!path) { falhas++; continue; }
     const nome = f.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     novos.push({id: uid('s'), tipo: 'imagem', ativo: true, titulo: nome, imagem: path, duracao: 15, canais: [], dias: [], inicio: '', fim: '', horaIni: '', horaFim: '', repetir: 1});
@@ -448,7 +448,7 @@ function editarSlide(id) {
       <div class="dica">A imagem é reduzida e enviada para a hospedagem automaticamente (com login). Ou cole um endereço:</div>
       <input type="url" placeholder="https://… ou midia/arquivo.jpg" value="${s.imagem && !s.imagem.startsWith('data:') ? esc(s.imagem) : ''}" oninput="setS('imagem', this.value)">
       ${s.imagem ? `<img class="miniatura" src="${esc(srcPrev(s.imagem))}"><button class="b x" style="margin-top:6px" onclick="setS('imagem','');editarSlide('${id}')">Remover imagem</button>` : ''}`;
-    if (t === 'imagem') h += `<div class="ok-box">A arte aparece sempre <b>inteira</b>, na proporção original, sem cortar nada. Formato ideal: <b>2:3</b> (ex.: 1024 × 1536), igual aos folhetos atuais.</div>`;
+    if (t === 'imagem') h += `<div class="ok-box">A arte aparece sempre <b>inteira</b>, em tela cheia (sem a faixa do topo), sem cortar nada. Formato ideal: <b>1080 × 1920</b> (9:16, como story do Instagram) — assim ocupa o totem todo.</div>`;
   }
   if (t === 'video') {
     h += `<label>Enviar vídeo (MP4)</label><input type="file" accept="video/mp4,video/*" onchange="carregarVideo(this)">`;
@@ -487,7 +487,7 @@ function reduzirImagem(file, max = 1600, q = 0.82) {
     img.onerror = erro; img.src = url;
   });
 }
-async function carregarImagem(inp) { if (!inp.files[0]) return; const v = await guardarImagem(inp.files[0], 1600, 0.82); if (v) { setS('imagem', v); editarSlide(slideSel); } }
+async function carregarImagem(inp) { if (!inp.files[0]) return; const v = await guardarImagem(inp.files[0], 1920, 0.88); if (v) { setS('imagem', v); editarSlide(slideSel); } }
 async function carregarVideo(inp) {
   const f = inp.files[0]; if (!f) return;
   if (!nuvem.cred) return alert('Para enviar vídeos é preciso entrar com login (o vídeo vai para a hospedagem).');
@@ -560,7 +560,8 @@ function editarCanal(id) {
       <div><label>Animação entre conteúdos</label><select onchange="setC('transicao', this.value)">
         ${[['aleatoria','Variada (alterna sozinha)'],['deslizar','Deslizar'],['zoom','Zoom'],['subir','Subir'],['cortina','Cortina'],['fade','Esmaecer (suave)']]
           .map(([v,n]) => `<option value="${v}" ${(c.transicao || 'aleatoria') === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
-    <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas fotos de campanha (parceiros nunca têm zoom)</label></div>
+    <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.parceirosTelaCheia !== false ? 'checked' : ''} onchange="setC('parceirosTelaCheia', this.checked)"> Parceiros em tela cheia (esconde o topo)</label>
+      <label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas fotos de campanha (parceiros nunca têm zoom)</label></div>
     <h2 style="margin-top:18px">Com internet</h2>
     <div class="chips">
       <label><input type="checkbox" ${c.clima !== false ? 'checked' : ''} onchange="setC('clima', this.checked)"> Temperatura no topo</label>

@@ -266,6 +266,12 @@
   @keyframes pulsa2 { 50% { transform: scale(1.12); opacity: .7; } }
   .slide.ativo .arte { animation: tSobe 1.1s .5s cubic-bezier(.22,.9,.25,1) both; }
 
+  /* Telas de parceiro em tela cheia: o topo recolhe e a arte ocupa 100% */
+  #topo { transition: margin-top .7s ease; }
+  #tela.tela-cheia #topo { margin-top: calc(-1 * var(--hTopo, 12vmin)); }
+  #tela.tela-cheia #rodape { display: none !important; }
+  .m-imagem img { width: 100%; height: 100%; object-fit: contain; }
+
   /* Mensagens do sistema */
   #msg { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
     background: #0b2540; color: #fff; font-size: 3.5vmin; padding: 8vmin; z-index: 10; line-height: 1.5; }
@@ -562,6 +568,10 @@ function proximo() {
   const el = render(s);
   const seg = Math.max(3, parseFloat(s.duracao || canal.duracaoPadrao || 10));
   const tr = escolherTransicao(s);
+  // parceiro (imagem/vídeo) = tela cheia, sem a faixa do topo
+  const cheia = (s.tipo === 'imagem' || s.tipo === 'video') && canal.parceirosTelaCheia !== false;
+  $('tela').style.setProperty('--hTopo', $('topo').offsetHeight + 'px');
+  $('tela').classList.toggle('tela-cheia', cheia);
   el.classList.add('tr-' + tr);
   // zoom lento só em foto de campanha; arte/folheto de parceiro aparece inteira, sem zoom
   if (s.tipo === 'campanha' && s.imagem && canal.kenburns !== false) {
