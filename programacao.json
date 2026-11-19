@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-18T20:42:29.943Z",
+ "atualizado": "2026-11-19T12:23:41.191Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -80,11 +80,11 @@
    "duracao": 8
   },
   {
-   "id": "s-6ooylc",
+   "id": "s-bcjizg",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Amil Contabilidade",
-   "imagem": "midia/20261118204153-amil-contabilidade.jpg",
+   "imagem": "midia/20261119122253-amil-contabilidade.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -95,11 +95,11 @@
    "repetir": 1
   },
   {
-   "id": "s-8d7iei",
+   "id": "s-dway26",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Confianca",
-   "imagem": "midia/20261118204155-confianca.jpg",
+   "imagem": "midia/20261119122257-confianca.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -110,11 +110,11 @@
    "repetir": 1
   },
   {
-   "id": "s-8uh2xv",
+   "id": "s-1i9z1g",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Diagmed",
-   "imagem": "midia/20261118204158-diagmed.jpg",
+   "imagem": "midia/20261119122259-diagmed.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -125,11 +125,11 @@
    "repetir": 1
   },
   {
-   "id": "s-wz2jl7",
+   "id": "s-ezqwja",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Dra Juliana",
-   "imagem": "midia/20261118204200-dra-juliana.jpg",
+   "imagem": "midia/20261119122302-dra-juliana.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -140,11 +140,11 @@
    "repetir": 1
   },
   {
-   "id": "s-qp0923",
+   "id": "s-vp585z",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Dr Daniel Branco",
-   "imagem": "midia/20261118204203-dr-daniel-branco.jpg",
+   "imagem": "midia/20261119122304-dr-daniel-branco.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -155,11 +155,11 @@
    "repetir": 1
   },
   {
-   "id": "s-9qq5e7",
+   "id": "s-3q1syr",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Dr Daniel Verde",
-   "imagem": "midia/20261118204205-dr-daniel-verde.jpg",
+   "imagem": "midia/20261119122307-dr-daniel-verde.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -170,11 +170,11 @@
    "repetir": 1
   },
   {
-   "id": "s-eww8x3",
+   "id": "s-n3im0t",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Dr Maxsuel",
-   "imagem": "midia/20261118204208-dr-maxsuel.jpg",
+   "imagem": "midia/20261119122309-dr-maxsuel.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -185,11 +185,11 @@
    "repetir": 1
   },
   {
-   "id": "s-r498jy",
+   "id": "s-lzib70",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Help Celular",
-   "imagem": "midia/20261118204210-help-celular.jpg",
+   "imagem": "midia/20261119122311-help-celular.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -200,11 +200,11 @@
    "repetir": 1
   },
   {
-   "id": "s-8qi7m8",
+   "id": "s-lqrk1d",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Hsa Coracao",
-   "imagem": "midia/20261118204213-hsa-coracao.jpg",
+   "imagem": "midia/20261119122313-hsa-coracao.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -215,11 +215,11 @@
    "repetir": 1
   },
   {
-   "id": "s-ccc54p",
+   "id": "s-43maxw",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Hsa Cuidado Que Nao Para",
-   "imagem": "midia/20261118204216-hsa-cuidado-que-nao-para.jpg",
+   "imagem": "midia/20261119122316-hsa-cuidado-que-nao-para.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -230,11 +230,11 @@
    "repetir": 1
   },
   {
-   "id": "s-gaigzy",
+   "id": "s-qw7lac",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Lorenzoni",
-   "imagem": "midia/20261118204218-lorenzoni.jpg",
+   "imagem": "midia/20261119122319-lorenzoni.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -245,11 +245,11 @@
    "repetir": 1
   },
   {
-   "id": "s-za875r",
+   "id": "s-berrnj",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Negrao Granato",
-   "imagem": "midia/20261118204220-negrao-granato.jpg",
+   "imagem": "midia/20261119122323-negrao-granato.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -260,11 +260,11 @@
    "repetir": 1
   },
   {
-   "id": "s-5wfd2w",
+   "id": "s-pejb75",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Open Vestibulares",
-   "imagem": "midia/20261118204222-open-vestibulares.jpg",
+   "imagem": "midia/20261119122329-open-vestibulares.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -275,11 +275,11 @@
    "repetir": 1
   },
   {
-   "id": "s-umhrgg",
+   "id": "s-o2yypy",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Teto",
-   "imagem": "midia/20261118204225-teto.jpg",
+   "imagem": "midia/20261119122334-teto.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -290,11 +290,11 @@
    "repetir": 1
   },
   {
-   "id": "s-sdj7mc",
+   "id": "s-z1q6fs",
    "tipo": "imagem",
    "ativo": true,
    "titulo": "Top Academia",
-   "imagem": "midia/20261118204227-top-academia.jpg",
+   "imagem": "midia/20261119122338-top-academia.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
