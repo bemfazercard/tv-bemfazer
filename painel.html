@@ -560,10 +560,6 @@ function editarCanal(id) {
       <div><label>Animação entre conteúdos</label><select onchange="setC('transicao', this.value)">
         ${[['aleatoria','Variada (alterna sozinha)'],['deslizar','Deslizar'],['zoom','Zoom'],['subir','Subir'],['cortina','Cortina'],['fade','Esmaecer (suave)']]
           .map(([v,n]) => `<option value="${v}" ${(c.transicao || 'aleatoria') === v ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
-    <div class="chips" style="margin-top:8px">
-      <label><input type="checkbox" ${c.vinhetas !== false ? 'checked' : ''} onchange="setC('vinhetas', this.checked)"> Vinhetas animadas do Bem Fazer entre os parceiros</label>
-      <label>a cada <input type="number" min="1" max="10" value="${esc(c.vinhetaCada || 3)}" style="width:60px;padding:4px" onchange="setC('vinhetaCada', this.value)"> parceiros</label>
-      <label><input type="checkbox" ${c.brilho !== false ? 'checked' : ''} onchange="setC('brilho', this.checked)"> Reflexo de luz discreto nas artes</label></div>
     <div class="chips" style="margin-top:8px"><label><input type="checkbox" ${c.parceirosTelaCheia !== false ? 'checked' : ''} onchange="setC('parceirosTelaCheia', this.checked)"> Parceiros em tela cheia (esconde o topo)</label>
       <label><input type="checkbox" ${c.kenburns !== false ? 'checked' : ''} onchange="setC('kenburns', this.checked)"> Zoom lento nas fotos de campanha (parceiros nunca têm zoom)</label></div>
     <h2 style="margin-top:18px">Com internet</h2>

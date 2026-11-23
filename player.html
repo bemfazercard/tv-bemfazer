@@ -272,52 +272,6 @@
   #tela.tela-cheia #rodape { display: none !important; }
   .m-imagem img { width: 100%; height: 100%; object-fit: contain; }
 
-  /* ---- Reflexo de luz discreto nas artes dos parceiros ---- */
-  .m-imagem { position: relative; }
-  .reflexo { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-  .reflexo::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 35%; left: -60%;
-    background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.0) 30%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 70%, transparent 100%);
-    transform: skewX(-12deg); }
-  .slide.ativo .reflexo::after { animation: reflexo 2.4s 1.4s ease-in-out both; }
-  @keyframes reflexo { from { left: -60%; } to { left: 130%; } }
-
-  /* ---- Vinhetas Bem Fazer ---- */
-  .m-vinheta { align-items: center; justify-content: center; }
-  .vin { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .wm-vin { font-size: 13vmin; }
-  .vin-frase { margin-top: 3.5vmin; font-size: 3.6vmin; font-weight: 700; color: rgba(236,228,255,.92); letter-spacing: .02em; }
-  .slide.ativo .vin-logo { animation: vinLogo 1.2s .3s cubic-bezier(.2,.8,.2,1) both; }
-  .slide.ativo .vin-frase { animation: tSobe .9s .9s cubic-bezier(.22,.9,.25,1) both; }
-  @keyframes vinLogo { from { opacity: 0; transform: scale(.9); filter: blur(1vmin); } to { opacity: 1; transform: none; filter: none; } }
-  /* modelo 0: cartões em leque */
-  .leque { position: relative; width: 70vmin; height: 46vmin; margin-top: 7vmin; }
-  body .leque .cartao, body.vertical .leque .cartao, body.horizontal .leque .cartao { width: 40vmin; height: 25vmin; left: 50%; top: 12%; margin-left: -20vmin; animation: none; opacity: 0; }
-  .leque .cartao .wm-cartao { font-size: 4.4vmin; }
-  .leque .cartao .c-ic { display: none; }
-  .leque .cartao .c-nome { font-size: 2.8vmin; bottom: 2.6vmin; }
-  .slide.ativo .leque .c1 { animation: leque1 1.3s .8s cubic-bezier(.2,.8,.2,1) both; }
-  .leque .c2 { z-index: 3; }
-  .slide.ativo .leque .c2 { animation: leque2 1.3s .95s cubic-bezier(.2,.8,.2,1) both, boia 5s 2.3s ease-in-out infinite; }
-  .slide.ativo .leque .c3 { animation: leque3 1.3s 1.1s cubic-bezier(.2,.8,.2,1) both; }
-  @keyframes leque1 { from { opacity: 0; transform: translateY(20vmin) rotate(0); } to { opacity: 1; transform: translateX(-23vmin) translateY(5vmin) rotate(-17deg); } }
-  @keyframes leque2 { from { opacity: 0; transform: translateY(20vmin); } to { opacity: 1; transform: translateY(-3vmin); } }
-  @keyframes leque3 { from { opacity: 0; transform: translateY(20vmin) rotate(0); } to { opacity: 1; transform: translateX(23vmin) translateY(5vmin) rotate(17deg); } }
-  @keyframes boia { 0%,100% { transform: translateY(-3vmin); } 50% { transform: translateY(-4.5vmin); } }
-  /* modelo 1: coração com halo */
-  .vin-coracao { position: relative; z-index: 2; width: 34vmin; height: 31vmin; margin-bottom: 6vmin; filter: drop-shadow(0 0 6vmin rgba(232,33,127,.5)); }
-  .slide.ativo .vin-coracao { animation: batida 1.6s .4s ease-in-out both, batida2 2.4s 2s ease-in-out infinite; }
-  @keyframes batida { from { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.06); } to { transform: scale(1); } }
-  @keyframes batida2 { 0%,100% { transform: scale(1); } 12% { transform: scale(1.05); } 24% { transform: scale(1); } 36% { transform: scale(1.03); } 48% { transform: scale(1); } }
-  .vin-cor .halo { top: 50%; left: 50%; margin: -48vmin 0 0 -35vmin; }
-  .vin-cor .wm-vin { font-size: 9vmin; }
-  /* modelo 2: logo + linha + categorias */
-  .vin-linha { width: 0; height: .5vmin; margin-top: 4vmin; border-radius: 1vmin; background: linear-gradient(90deg, #e8217f, #b22bd9); }
-  .slide.ativo .vin-linha { animation: linha 1s .8s ease-out both; }
-  @keyframes linha { to { width: 34vmin; } }
-  .vin-mini { display: flex; gap: 2vmin; margin-top: 5vmin; flex-wrap: wrap; justify-content: center; }
-  .vin-mini span { font-size: 2.8vmin; font-weight: 700; padding: 1.2vmin 2.8vmin; border-radius: 8vmin; border: .3vmin solid rgba(232,33,127,.8); background: rgba(232,33,127,.08); opacity: 0; }
-  .slide.ativo .vin-mini span { animation: tSobe .8s cubic-bezier(.22,.9,.25,1) both; }
-
   /* Mensagens do sistema */
   #msg { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
     background: #0b2540; color: #fff; font-size: 3.5vmin; padding: 8vmin; z-index: 10; line-height: 1.5; }
@@ -486,24 +440,9 @@ function montarFila(reiniciar) {
   const nova = [];
   base.forEach(s => { const n = Math.max(1, Math.min(5, parseInt(s.repetir || 1))); for (let i = 0; i < n; i++) nova.push({s, ordem: (i + 0.5) / n + nova.length * 1e-6}); });
   nova.sort((a, b) => a.ordem - b.ordem);
-  let lista = nova.map(x => x.s);
-  // vinhetas discretas do Bem Fazer entre os parceiros (a cada N parceiros)
-  if (canal.tema === 'bemfazer' && canal.vinhetas !== false) {
-    const cada = Math.max(1, parseInt(canal.vinhetaCada || 3)); const com = []; let cont = 0, v = 0;
-    lista.forEach((s, i) => {
-      com.push(s);
-      if (s.tipo === 'imagem' || s.tipo === 'video') {
-        cont++;
-        const prox = lista[i + 1];
-        if (cont % cada === 0 && prox && (prox.tipo === 'imagem' || prox.tipo === 'video'))
-          com.push({id: 'vinheta-' + (v), tipo: 'vinheta', variante: v++ % 3, duracao: 6});
-      }
-    });
-    lista = com;
-  }
-  const ids = lista.map(x => x.id).join('|');
+  const ids = nova.map(x => x.s.id).join('|');
   const antigos = fila.map(x => x.id).join('|');
-  fila = lista;
+  fila = nova.map(x => x.s);
   montarRodape();
   if (!fila.length) { mostrarMsg('Nenhum conteúdo programado para este horário.'); palco.innerHTML = ''; clearTimeout(timer); timer = null; return; }
   mostrarMsg('');
@@ -587,10 +526,7 @@ function render(s) {
       break;
     }
     case 'imagem':
-      el.innerHTML = `<img class="m-img-anim" src="${esc(s.imagem)}" alt="">${canal.brilho !== false ? '<div class="reflexo"></div>' : ''}`;
-      break;
-    case 'vinheta':
-      el.innerHTML = htmlVinheta(s.variante || 0);
+      el.innerHTML = `<img class="m-img-anim" src="${esc(s.imagem)}" alt="">`;
       break;
     case 'video':
       el.innerHTML = `<video muted playsinline autoplay preload="auto"></video>`;
@@ -622,17 +558,6 @@ function htmlCartoes(s) {
     <div class="coracao-solto">${CORACAO_SVG}</div>
     ${selo1 ? `<div class="selo s1">${fmt(selo1)}</div>` : ''}${selo2 ? `<div class="selo s2">${fmt(selo2)}</div>` : ''}</div>`;
 }
-function htmlVinheta(v) {
-  const frases = ['Seu cartão de benefícios', 'Mais de 100 parceiros na região', 'Descontos exclusivos para você'];
-  if (v === 1) return `<div class="vin vin-cor"><div class="halo"></div><div class="vin-coracao">${CORACAO_SVG}</div>
-    <div class="vin-logo">${marcaHTML('wm-vin')}</div><div class="vin-frase">${frases[1]}</div></div>`;
-  if (v === 2) return `<div class="vin vin-txt"><div class="vin-logo">${marcaHTML('wm-vin')}</div>
-    <div class="vin-linha"></div><div class="vin-frase">${frases[2]}</div>
-    <div class="vin-mini">${['Saúde', 'Comércio', 'Serviços', 'Educação'].map((t, i) => `<span style="animation-delay:${1.2 + i * .25}s">${t}</span>`).join('')}</div></div>`;
-  const cartao = (cls, nome) => `<div class="cartao ${cls}"><span class="c-ic">${CORACAO_SVG}</span>${marcaHTML('wm-cartao', cls === 'c2' ? 'branca' : 'azul')}<div class="c-nome">${nome}</div></div>`;
-  return `<div class="vin vin-cart"><div class="vin-logo">${marcaHTML('wm-vin')}</div><div class="vin-frase">${frases[0]}</div>
-    <div class="leque">${cartao('c1', 'MARIA SOUZA')}${cartao('c2', 'JOÃO PEREIRA')}${cartao('c3', 'ANA LIMA')}</div></div>`;
-}
 function htmlCoracao() { return `<div class="arte coracao"><div class="halo"></div><div class="coracao-grande">${CORACAO_SVG}</div></div>`; }
 
 function proximo() {
@@ -644,7 +569,7 @@ function proximo() {
   const seg = Math.max(3, parseFloat(s.duracao || canal.duracaoPadrao || 10));
   const tr = escolherTransicao(s);
   // parceiro (imagem/vídeo) = tela cheia, sem a faixa do topo
-  const cheia = ((s.tipo === 'imagem' || s.tipo === 'video') && canal.parceirosTelaCheia !== false) || s.tipo === 'vinheta';
+  const cheia = (s.tipo === 'imagem' || s.tipo === 'video') && canal.parceirosTelaCheia !== false;
   $('tela').style.setProperty('--hTopo', $('topo').offsetHeight + 'px');
   $('tela').classList.toggle('tela-cheia', cheia);
   el.classList.add('tr-' + tr);
