@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-19T12:23:41.191Z",
+ "atualizado": "2026-11-23T13:42:55.170Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -80,11 +80,11 @@
    "duracao": 8
   },
   {
-   "id": "s-bcjizg",
+   "id": "s-vp585z",
    "tipo": "imagem",
    "ativo": true,
-   "titulo": "Amil Contabilidade",
-   "imagem": "midia/20261119122253-amil-contabilidade.jpg",
+   "titulo": "Dr Daniel Branco",
+   "imagem": "midia/20261119122304-dr-daniel-branco.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
@@ -140,11 +140,11 @@
    "repetir": 1
   },
   {
-   "id": "s-vp585z",
+   "id": "s-bcjizg",
    "tipo": "imagem",
    "ativo": true,
-   "titulo": "Dr Daniel Branco",
-   "imagem": "midia/20261119122304-dr-daniel-branco.jpg",
+   "titulo": "Amil Contabilidade",
+   "imagem": "midia/20261119122253-amil-contabilidade.jpg",
    "duracao": 15,
    "canais": [],
    "dias": [],
