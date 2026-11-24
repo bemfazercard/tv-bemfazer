@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado": "2026-11-23T19:51:51.308Z",
+ "atualizado": "2026-11-24T13:08:20.619Z",
  "canais": [
   {
    "id": "bemfazer-loja",
@@ -29,7 +29,7 @@
    "texto": "Descontos imperdíveis em mais de **100 parceiros**: médicos, clínicas, restaurantes, lojas, academias, salões de beleza e muito mais.",
    "chamada": "",
    "duracao": 12,
-   "repetir": 2,
+   "repetir": "1",
    "arte": "cartoes"
   },
   {
